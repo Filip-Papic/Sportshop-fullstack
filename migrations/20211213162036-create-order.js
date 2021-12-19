@@ -8,6 +8,10 @@ module.exports = {
         primaryKey: true,
         type: DataTypes.INTEGER
       },
+      userID: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+      },
       priceTotal: {
         type: DataTypes.FLOAT
       },

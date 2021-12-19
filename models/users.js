@@ -3,7 +3,7 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class Customer extends Model {
+  class Users extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -11,18 +11,16 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      this.hasMany(Messages, {foreignKey: 'customerID', as: 'messages', onDelete: 'cascade', hooks: true});
+      this.hasMany(models.Orders, {foreignKey: 'userID', as: 'orders', onDelete: 'cascade', hooks: true})
     }
   };
-  Customer.init({
+  Users.init({
     name: { 
       type : DataTypes.STRING,
-      allowNull : false,
       unique : true
     },
     email: { 
       type : DataTypes.STRING,
-      allowNull : false,
       unique : true,
       validate: {
         isEmail: {
@@ -32,30 +30,25 @@ module.exports = (sequelize, DataTypes) => {
     },
     password:{
       type: DataTypes.STRING,
-      allowNull : false,
     },
     adress:{
       type: DataTypes.STRING,
-      allowNull : false,
     },
     postalCode: {
       type: DataTypes.INTEGER,
-      allowNull : false,
     },
     city: {
       type: DataTypes.STRING,
-      allowNull : false,
     },
     country: {
       type: DataTypes.STRING,
-      allowNull : false,
     }
   }, {
     sequelize,
     defaultScope: {
       attributes: { exclude: ['email']}
     },
-    modelName: 'Customer',
+    modelName: 'Users',
   });
-  return Customer;
+  return Users;
 };
