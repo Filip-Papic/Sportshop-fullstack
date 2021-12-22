@@ -27,6 +27,11 @@ module.exports = {
         type: DataTypes.STRING,
         allowNull: false,
       },
+      admin:{
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false
+      },
       adress: {
         type: DataTypes.STRING,
         allowNull: false

@@ -1,66 +1,140 @@
 function init() {
-    
-    fetch('http://192.168.0.143:8000/api/users')
+
+    const cookies = document.cookie.split('=');
+    const token = cookies[cookies.length - 1];
+
+    fetch('http://127.0.0.1:8000/api/users', {
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    })
         .then( res => res.json() )
         .then( data => {
             const lst = document.getElementById('usrLst');
 
             data.forEach( el => {
-                lst.innerHTML += `<li>ID: ${el.id}, Name: ${el.name}, E-mail: ${el.email}</li>`;
+                lst.innerHTML += `<li>ID: ${el.id}, 
+                                    Name: ${el.name}, 
+                                    E-mail: ${el.email}
+                                    Adress: ${el.adress}, 
+                                    Postal Code: ${el.postalCode}, 
+                                    City: ${el.city}, 
+                                    Country: ${el.country}</li>`;
             });
         });
 
-    fetch('http://192.168.0.143:8000/api/messages')
+    fetch('http://127.0.0.1:8000/api/orders', {
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    })
         .then( res => res.json() )
         .then( data => {
-            const lst = document.getElementById('msgLst');
+            const lst = document.getElementById('orderList');
 
             data.forEach( el => {
-                lst.innerHTML += `<li>ID: ${el.id}, Body: ${el.body}, User: ${el.user.name}</li>`;
+                lst.innerHTML += `<li>OrderID: ${el.id}, 
+                                    UserID: ${el.userID}, 
+                                    Price: ${el.priceTotal}$, 
+                                    Quantity: ${el.quantityTotal},
+                                    Details: ${el.details}</li>`;
             });
         });
     
-    document.getElementById('usrBtn').addEventListener('click', e => {
+    document.getElementById('orderBtn').addEventListener('click', e => {
         e.preventDefault();
 
         const data = {
-            name: document.getElementById('name').value,
-            email: document.getElementById('email').value
+            body: document.getElementById('productList').value
         };
 
-        document.getElementById('name').value = '';
-        document.getElementById('email').value = '';
-
-        fetch('http://192.168.0.143:8000/api/users', {
+        fetch('http://127.0.0.1:8000/api/orders', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data)
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
         })
             .then( res => res.json() )
-            .then( data => {
-                document.getElementById('usrLst').innerHTML += `<li>ID: ${data.id}, Name: ${data.name}, E-mail: ${data.email}</li>`;
+            .then( el => {
+                if (el.msg) {
+                    alert(el.msg);
+                } else {
+                    document.getElementById('orderList').innerHTML += `<li>OrderID: ${el.id}, 
+                                                                        Price: ${el.body}$, 
+                                                                        Quantity: ${el.quantityTotal},
+                                                                        Details: ${el.details},</li>`;
+                }
             });
     });
-
-    document.getElementById('msgBtn').addEventListener('click', e => {
+    
+    fetch('http://127.0.0.1:8000/api/categories', {
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    })
+        .then( res => res.json() )
+        .then( data => {
+            const lst = document.getElementById('catList');
+            
+            data.forEach( el => {
+                lst.innerHTML += `<li>CategoryID: ${el.id}</li>
+                                  <button>${el.name}</button>`;
+            });
+        });
+    
+    const catID = [1,2,3,4,5];
+    document.getElementById('catList').addEventListener('click', e => {
         e.preventDefault();
-        
-        const data = {
-            body: document.getElementById('body').value,
-            userId: document.getElementById('userId').value
-        };
 
-        document.getElementById('body').value = '';
-        document.getElementById('userId').value = '';
+        document.getElementById('productList').value = [];
 
-        fetch('http://192.168.0.143:8000/api/messages', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data)
+        fetch('http://127.0.0.1:8000/api/products', {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
         })
             .then( res => res.json() )
             .then( data => {
-                document.getElementById('msgLst').innerHTML += `<li>ID: ${data.id}, Body: ${data.body}</li>`;
+                const lst = document.getElementById('productList');
+                data.forEach( el => {
+                    //if(){
+                        lst.innerHTML += `<li>CategoryID: ${el.categoryID}</li>
+                                        <button>Name: ${el.name}</button>`;
+                    //    }
+                    });
             });
+        });      
+
+    document.getElementById('orderBtn').addEventListener('click', e => {
+        e.preventDefault();
+
+        const data = {
+            body: document.getElementById('productList').value
+        };
+
+        fetch('http://127.0.0.1:8000/api/orders', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+        })
+            .then( res => res.json() )
+            .then( el => {
+                if (el.msg) {
+                    alert(el.msg);
+                } else {
+                    document.getElementById('orderList').innerHTML += `<li>OrderID: ${el.id}, 
+                                                                        Price: ${el.body}$, 
+                                                                        Quantity: ${el.quantityTotal},
+                                                                        Details: ${el.details},</li>`;
+                }
+            });
+    });
+    
+    document.getElementById('logout').addEventListener('click', e => {
+        document.cookie = `token=;SameSite=Lax`;
+        window.location.href = 'login.html';
     });
 }

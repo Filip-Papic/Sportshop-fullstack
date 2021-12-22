@@ -12,24 +12,17 @@
     </head>
     <body onload="init()">
         <div class="container">
+            <button type="button" id="logout" class="btn btn-primary">Log Out</button>
+        </div>
+        <div class="container">
             <div class="row">
-                <div class="col">
-                    <form method="post" action="/api/users">
-                        <div class="mb-3">
-                            <label for="name" class="form-label">Name</label>
-                            <input type="text" class="form-control" id="name" name="name">
-                        </div>
-                        <div class="mb-3">
-                            <label for="email" class="form-label">Email address</label>
-                            <input type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp">
-                            <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
-                        </div>
-                        <button type="submit" class="btn btn-primary" id="usrBtn">Submit</button>
-                    </form>
-                </div>
                 <div class="col-6">
                     <h2>Users:</h2>
                     <ul id="usrLst"></ul>
+                </div>
+                <div class="col-6">
+                    <h2> Categories:</h2>
+                    <ul id="catList"></ul>
                 </div>
             </div>
         </div>
@@ -37,21 +30,17 @@
         <div class="container">
             <div class="row">
                 <div class="col">
-                    <form method="post" action="/api/messages">
+                    <form method="post" action="/api/orders">
                         <div class="mb-3">
-                            <label for="userId" class="form-label">userId</label>
-                            <input type="text" class="form-control" id="userId" name="userId">
+                            <h2>Products:</h2>
+                            <ul id="productList"></ul>                            
                         </div>
-                        <div class="mb-3">
-                            <label for="body" class="form-label">Body</label>
-                            <textarea class="form-control" id="body" name="body" rows="3"></textarea>
-                        </div>
-                        <button type="submit" class="btn btn-primary" id="msgBtn">Submit</button>
+                        <button type="submit" class="btn btn-primary" id="orderBtn">Submit order</button>
                     </form>
                 </div>
                 <div class="col-6">
-                    <h2>Messages:</h2>
-                    <ul id="msgLst"></ul>
+                    <h2>Orders:</h2>
+                    <ul id="orderList"></ul>
                 </div>
             </div>
         </div>

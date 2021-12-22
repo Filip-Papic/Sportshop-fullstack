@@ -31,6 +31,11 @@ module.exports = (sequelize, DataTypes) => {
     password:{
       type: DataTypes.STRING,
     },
+    admin:{
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false
+    },
     adress:{
       type: DataTypes.STRING,
     },
@@ -46,7 +51,6 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     defaultScope: {
-      attributes: { exclude: ['email']}
     },
     modelName: 'Users',
   });

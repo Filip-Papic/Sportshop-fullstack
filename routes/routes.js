@@ -1,31 +1,36 @@
-const { sequelize, Users, Products, Orders, Categories, OrderProducts } = require('../models');
 const express = require('express');
+const { sequelize, Users, Products, Orders, Categories, OrderProducts } = require('../models');
+const jwt = require('jsonwebtoken');
+require('dotenv').config();
 
 const route = express.Router();
 route.use(express.json());
 route.use(express.urlencoded({ extended: true })); 
 
+function authToken(req, res, next) {
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(' ')[1];
+  
+    if (token == null){ 
+        console.log("auth 1 error"); 
+        return res.status(401).json({ msg: err });
+    }
+    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
+    
+        if (err){
+            console.log("auth 2 error"); 
+            return res.status(403).json({ msg: err });
+        }
+        req.user = user;
+    
+        next();
+    });
+}
+
+route.use(authToken);
+
 route.get('/users', (req, res) => {      //read all
     Users.findAll()
-        .then( rows => res.json(rows) )
-        .catch( err => res.status(500).json(err) );
-});
-
-route.get('/users/:id', (req, res) => { //read
-    Users.findOne({ where: { id: req.params.id } })
-        .then( rows => res.json(rows) )
-        .catch( err => res.status(500).json(err) );
-});
-
-route.post('/users', (req, res) => {   //create
-    Users.create( { name: req.body.name, 
-                    email: req.body.email, 
-                    password: req.body.password,
-                    adress: req.body.adress,
-                    postalCode: req.body.postalCode,
-                    city: req.body.city,
-                    country: req.body.country    
-                })
         .then( rows => res.json(rows) )
         .catch( err => res.status(500).json(err) );
 });
@@ -87,15 +92,23 @@ route.get('/orders/:id', (req, res) => {
 });
 
 route.post('/orders', (req, res) => {
-    Orders.create({ id: req.body.id,
-                    priceTotal: req.body.priceTotal,
-                    quantityTotal: req.body.quantityTotal,
-                    details: req.body.details,
-                    date: req.body.date,
-                    userID: req.body.userID, 
-                    productID: req.body.productID
-                })
-        .then( rows => res.json(rows) )
+    Users.findOne({ where: { id: req.user.userID} })
+        .then( usr => {
+            if (usr.admin) {
+                Orders.create({ priceTotal: req.body.priceTotal,
+                                quantityTotal: req.body.quantityTotal,
+                                details: req.body.details,
+                                date: req.body.date,
+                                userId: req.user.userID, 
+                                productID: req.body.productID
+                            })
+                    .then( rows => res.json(rows) )
+                    .catch( err => res.status(500).json(err) );
+                    
+            } else {
+                res.status(403).json({ msg: "Invalid credentials"});
+            }
+        })
         .catch( err => res.status(500).json(err) );
 });
 
@@ -266,3 +279,25 @@ route.delete('/orderproducts/:id', (req, res) => {
 });
 
 module.exports = route;
+
+/* login
+route.get('/users/:id', (req, res) => { //read one
+    Users.findOne({ where: { id: req.params.id } })
+        .then( rows => res.json(rows) )
+        .catch( err => res.status(500).json(err) );
+});
+*/
+/* register
+route.post('/users', (req, res) => {   //create
+    Users.create( { name: req.body.name, 
+                    email: req.body.email, 
+                    password: req.body.password,
+                    adress: req.body.adress,
+                    postalCode: req.body.postalCode,
+                    city: req.body.city,
+                    country: req.body.country    
+                })
+        .then( rows => res.json(rows) )
+        .catch( err => res.status(500).json(err) );
+});
+*/
