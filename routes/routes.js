@@ -10,15 +10,13 @@ route.use(express.urlencoded({ extended: true }));
 function authToken(req, res, next) {
     const authHeader = req.headers['authorization'];
     const token = authHeader && authHeader.split(' ')[1];
-  
-    if (token == null){ 
-        console.log("auth 1 error"); 
+    
+    if (token == null)
         return res.status(401).json({ msg: err });
-    }
+    
     jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
     
-        if (err){
-            console.log("auth 2 error"); 
+        if (err){ 
             return res.status(403).json({ msg: err });
         }
         req.user = user;
@@ -92,24 +90,15 @@ route.get('/orders/:id', (req, res) => {
 });
 
 route.post('/orders', (req, res) => {
-    Users.findOne({ where: { id: req.user.userID} })
-        .then( usr => {
-            if (usr.admin) {
-                Orders.create({ priceTotal: req.body.priceTotal,
-                                quantityTotal: req.body.quantityTotal,
-                                details: req.body.details,
-                                date: req.body.date,
-                                userId: req.user.userID, 
-                                productID: req.body.productID
-                            })
-                    .then( rows => res.json(rows) )
-                    .catch( err => res.status(500).json(err) );
-                    
-            } else {
-                res.status(403).json({ msg: "Invalid credentials"});
-            }
-        })
-        .catch( err => res.status(500).json(err) );
+        Orders.create({ priceTotal: req.body.priceTotal,
+                        quantityTotal: req.body.quantityTotal,
+                        details: req.body.details,
+                        date: req.body.date,
+                        userId: req.user.userID, 
+                        productID: req.body.productID
+                    })
+            .then( rows => res.json(rows) )
+            .catch( err => res.status(500).json(err) );
 });
 
 route.put('/orders/:id', (req, res) => {   

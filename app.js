@@ -1,5 +1,5 @@
 const express = require('express');
-const { sequelize } = require('./models');
+const { sequelize, Users, Products, Orders, Categories, OrderProducts } = require('./models');
 const msgs = require('./routes/routes');
 const path = require('path');
 const jwt = require('jsonwebtoken');
@@ -52,6 +52,10 @@ app.get('/login', (req, res) => {
 
 app.get('/', authToken, (req, res) => {
     res.sendFile('index.html', { root: './static' });
+});
+
+app.get('/users', authToken, (req, res) => {
+    res.sendFile('users.html', { root: './static' });
 });
 
 app.use(express.static(path.join(__dirname, 'static')));

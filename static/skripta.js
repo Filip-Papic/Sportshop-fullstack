@@ -1,4 +1,4 @@
-function init() {
+/*function init() {
 
     const cookies = document.cookie.split('=');
     const token = cookies[cookies.length - 1];
@@ -133,8 +133,37 @@ function init() {
             });
     });
     
+    //create product
+    document.getElementById('orderBtn').addEventListener('click', e => {
+        e.preventDefault();
+
+        const data = {
+            body: document.getElementById('productList').value
+        };
+
+        fetch('http://127.0.0.1:8000/api/admin/product', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+        })
+            .then( res => res.json() )
+            .then( el => {
+                if (el.msg) {
+                    alert(el.msg);
+                } else {
+                    document.getElementById('orderList').innerHTML += `<li>OrderID: ${el.id}, 
+                                                                        Price: ${el.body}$, 
+                                                                        Quantity: ${el.quantityTotal},
+                                                                        Details: ${el.details},</li>`;
+                }
+            });
+    });
+
     document.getElementById('logout').addEventListener('click', e => {
         document.cookie = `token=;SameSite=Lax`;
         window.location.href = 'login.html';
     });
 }
+*/
