@@ -33,25 +33,40 @@ route.get('/users', (req, res) => {      //read all
         .catch( err => res.status(500).json(err) );
 });
 
-route.put('/users/:id', (req, res) => {    //update
-    Users.findOne({ where: { id: req.params.id } })
-        .then( user => {
-            user.name = req.body.name;
-            user.email = req.body.email;
-            user.password = req.body.password;
-            user.adress = req.body.adress;
-            user.postalCode = req.body.postalCode;
-            user.city = req.body.city;
-            user.country = req.body.country;
+route.get('/users/:id', (req, res) => {
+    Users.findOne({ where: { id: req.params.id }})//, include:['orderedProducts'] })
+        .then( rows => res.json(rows) )
+        .catch( err => res.status(500).json(err) );
+});
 
-            user.save()
-                .then( rows => res.json(rows) )
-                .catch( err => res.status(500).json(err) );
+route.put('/admin/users/:id', (req, res) => {    //update
+    Users.findOne({ where: { id: req.user.userId } })
+        .then( usr => {
+            if (usr.admin) {
+                Users.findOne({ where: { id: req.params.id } })
+                    .then( user => {
+                        user.id = req.body.id; 
+                        user.name = req.body.name;
+                        user.email = req.body.email;
+                        user.password = req.body.password;
+                        user.adress = req.body.adress;
+                        user.postalCode = req.body.postalCode;
+                        user.city = req.body.city;
+                        user.country = req.body.country;
+
+                        user.save()
+                            .then( rows => res.json(rows) )
+                            .catch( err => res.status(500).json(err) );
+                    })
+                    .catch( err => res.status(500).json(err) );
+            } else {
+                res.status(403).json({ msg: "Not admin"});
+            }
         })
         .catch( err => res.status(500).json(err) );
 });
 
-route.delete('/users/:id', (req, res) => { //delete
+route.delete('/admin/users/:id', (req, res) => { //delete
     Users.findOne({ where: { id: req.params.id } })
         .then( user => {
             user.name = req.body.name;
@@ -164,55 +179,110 @@ route.post('/admin/categories', (req, res) => {
         .catch( err => res.status(500).json(err) );
 });
 
+route.put('/admin/categories/:id', (req, res) => {   
+    Users.findOne({ where: { id: req.user.userId } })
+        .then( usr => {
+            if (usr.admin) {
+                Categories.findOne({ where: { id: req.params.id } })
+                    .then( category => {
+                        category.id = req.body.id;
+                        category.name = req.body.name;
+
+                        category.save()
+                            .then( rows => res.json(rows) )
+                            .catch( err => res.status(500).json(err) );
+                    })
+                    .catch( err => res.status(500).json(err) );
+            } else {
+                res.status(403).json({ msg: "Not admin"});
+            }
+        })
+        .catch( err => res.status(500).json(err) );
+});
+
+route.delete('/admin/categories/:id', (req, res) => { 
+    Users.findOne({ where: { id: req.user.userId } })
+        .then( usr => {
+            if (usr.admin) {
+                Categories.findOne({ where: { id: req.params.id } })
+                    .then( category => {
+
+                        category.destroy()
+                            .then( rows => res.json(rows) )
+                            .catch( err => res.status(500).json(err) );
+                    })
+                    .catch( err => res.status(500).json(err) );
+            } else {
+                res.status(403).json({ msg: "Not admin"});
+            }
+        })
+        .catch( err => res.status(500).json(err) );
+});
 route.post('/admin/products', (req, res) => {
-    Products.create({ id: req.body.id,
-                    name: req.body.name,
-                    categoryID: req.body.categoryID,
-                    orderID: req.body.orderID,
-                    manufacturer: req.body.manufacturer,
-                    price: req.body.price,
-                    description: req.body.description,
-                    size: req.body.size,
-                    quantityStock: req.body.quantityStock
-                })
-        .then( rows => res.json(rows) )
+    Users.findOne({ where: { id: req.user.userId } })
+        .then( usr => {
+            if (usr.admin) {
+                Products.create({ id: req.body.id,
+                                name: req.body.name,
+                                categoryID: req.body.categoryID,
+                                orderID: req.body.orderID,
+                                manufacturer: req.body.manufacturer,
+                                price: req.body.price,
+                                description: req.body.description,
+                                size: req.body.size,
+                                quantityStock: req.body.quantityStock
+                            })
+                    .then( rows => res.json(rows) )
+                    .catch( err => res.status(500).json(err) );
+            } else {
+                res.status(403).json({ msg: "Not admin"});
+            }
+        })
         .catch( err => res.status(500).json(err) );
 });
 
 route.put('/admin/products/:id', (req, res) => {   
-    Products.findOne({ where: { id: req.params.id } })
-        .then( product => {
-            product.id = req.body.id; 
-            product.name = req.body.name;
-            product.categoryID = req.body.categoryID;
-            product.manufacturer = req.body.manufacturer;
-            product.price = req.body.price;
-            product.description = req.body.description;
-            product.size = req.body.size;
-            product.quantityStock = req.body.quantityStock;
+    Users.findOne({ where: { id: req.user.userId } })
+        .then( usr => {
+            if (usr.admin) {
+                Products.findOne({ where: { id: req.params.id } })
+                    .then( product => {
+                        product.id = req.body.id; 
+                        product.name = req.body.name;
+                        product.categoryID = req.body.categoryID;
+                        product.manufacturer = req.body.manufacturer;
+                        product.price = req.body.price;
+                        product.description = req.body.description;
+                        product.size = req.body.size;
+                        product.quantityStock = req.body.quantityStock;
 
-            product.save()
-                .then( rows => res.json(rows) )
-                .catch( err => res.status(500).json(err) );
+                        product.save()
+                            .then( rows => res.json(rows) )
+                            .catch( err => res.status(500).json(err) );
+                    })
+                    .catch( err => res.status(500).json(err) );
+            } else {
+                res.status(403).json({ msg: "Not admin"});
+            }
         })
         .catch( err => res.status(500).json(err) );
 });
 
 route.delete('/admin/products/:id', (req, res) => { 
-    Products.findOne({ where: { id: req.params.id } })
-        .then( product => {
-            product.id = req.body.id; 
-            product.name = req.body.name;
-            product.categoryID = req.body.categoryID;
-            product.manufacturer = req.body.manufacturer;
-            product.price = req.body.price;
-            product.description = req.body.description;
-            product.size = req.body.size;
-            product.quantityStock = req.body.quantityStock;
+    Users.findOne({ where: { id: req.user.userId } })
+        .then( usr => {
+            if (usr.admin) {
+                Products.findOne({ where: { id: req.params.id } })
+                    .then( product => {
 
-            product.destroy()
-                .then( rows => res.json(rows) )
-                .catch( err => res.status(500).json(err) );
+                        product.destroy()
+                            .then( rows => res.json(rows) )
+                            .catch( err => res.status(500).json(err) );
+                    })
+                    .catch( err => res.status(500).json(err) );
+            } else {
+                res.status(403).json({ msg: "Not admin"});
+            }
         })
         .catch( err => res.status(500).json(err) );
 });
@@ -268,25 +338,3 @@ route.delete('/orderproducts/:id', (req, res) => {
 });
 
 module.exports = route;
-
-/* login
-route.get('/users/:id', (req, res) => { //read one
-    Users.findOne({ where: { id: req.params.id } })
-        .then( rows => res.json(rows) )
-        .catch( err => res.status(500).json(err) );
-});
-*/
-/* register
-route.post('/users', (req, res) => {   //create
-    Users.create( { name: req.body.name, 
-                    email: req.body.email, 
-                    password: req.body.password,
-                    adress: req.body.adress,
-                    postalCode: req.body.postalCode,
-                    city: req.body.city,
-                    country: req.body.country    
-                })
-        .then( rows => res.json(rows) )
-        .catch( err => res.status(500).json(err) );
-});
-*/

@@ -3,26 +3,6 @@ const token = cookies[cookies.length - 1];
 
 function initMain() {
 
-    fetch('http://127.0.0.1:8000/api/users', {
-        headers: {
-        'Authorization': `Bearer ${token}`
-        }
-    })
-        .then( res => res.json() )
-        .then( data => {
-            const lst = document.getElementById('userList');
-
-            data.forEach( el => {
-                lst.innerHTML += `<li>ID: ${el.id}, 
-                                    Name: ${el.name}, 
-                                    E-mail: ${el.email}
-                                    Adress: ${el.adress}, 
-                                    Postal Code: ${el.postalCode}, 
-                                    City: ${el.city}, 
-                                    Country: ${el.country}</li>`;                   
-            });
-        });
-
     document.getElementById('logout').addEventListener('click', e => { 
         document.cookie = `token=;SameSite=Lax`;
         window.location.href = 'login.html';
@@ -66,6 +46,25 @@ function initUsers() {
                                     Country: ${el.country}</li>`;                  
             });
         });
+
+    document.getElementById('deleteUserBtn').addEventListener('click', e => { 
+        e.preventDefault();
+
+        const data = {
+            body: document.getElementById('userList').value
+        };
+
+        fetch('http://127.0.0.1:8000/api/users/:id', {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+        })
+            .then( res => res.json() )
+            .then( el => console.log(el)) 
+            .catch(err => console.log(err))
+    });
 }
 
 function initOrders() {
@@ -88,40 +87,7 @@ function initOrders() {
         });
     }
 
-function initCategories() {
-    fetch('http://127.0.0.1:8000/api/categories', {
-        headers: {
-            'Authorization': `Bearer ${token}`
-        }
-    })
-        .then( res => res.json() )
-        .then( data => {
-            const lst = document.getElementById('catList');
 
-            data.forEach( el => {
-                lst.innerHTML += `<li>${el.name}</li>`;
-            });
-        });
-    }
 
-function initProducts() {
-    fetch('http://127.0.0.1:8000/api/products', {
-        headers: {
-            'Authorization': `Bearer ${token}`
-        }
-    })
-        .then( res => res.json() )
-        .then( data => {
-            const lst = document.getElementById('productList');
 
-            data.forEach( el => {
-                lst.innerHTML += `<li>Name: ${el.name}, 
-                                    Manufacturer: ${el.manufacturer}$, 
-                                    Price: ${el.price},
-                                    Description: ${el.description},
-                                    Size: ${el.size},
-                                    Quantity in stock: ${el.quantityStock},</li>`;
-            });
-        });
-    }
 
