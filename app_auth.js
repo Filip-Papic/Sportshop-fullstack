@@ -21,6 +21,7 @@ app.post('/register', (req, res) => {
         name: req.body.name,
         email: req.body.email,
         admin: req.body.admin,
+        moderator: req.body.moderator,
         password: bcrypt.hashSync(req.body.password, 10),
         adress: req.body.adress,
         postalCode: req.body.postalCode,

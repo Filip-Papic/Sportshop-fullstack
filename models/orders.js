@@ -17,18 +17,22 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   Orders.init({ 
-    priceTotal: {
-      type: DataTypes.FLOAT
+    id: {
+      primaryKey: true,
+      type: DataTypes.INTEGER
     },
     quantityTotal:{
       type: DataTypes.INTEGER
+    },
+   /* priceTotal: {
+      type: DataTypes.FLOAT
     },
     details:{
       type: DataTypes.STRING
     },
     date:{
       type: DataTypes.DATE
-    }
+    }*/
   }, {
     sequelize,
     modelName: 'Orders',

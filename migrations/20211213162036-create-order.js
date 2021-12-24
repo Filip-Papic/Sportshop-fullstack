@@ -8,19 +8,12 @@ module.exports = {
         primaryKey: true,
         type: DataTypes.INTEGER
       },
-      userID: {
-        type: DataTypes.INTEGER,
-        allowNull: false
-      },
-      productID: {
-        type: DataTypes.INTEGER,
-        allowNull: false
-      },
-      priceTotal: {
-        type: DataTypes.FLOAT
-      },
       quantityTotal: {
         type: DataTypes.INTEGER
+      },
+      /*
+      priceTotal: {
+        type: DataTypes.FLOAT
       },
       details: {
         type: DataTypes.STRING
@@ -28,7 +21,7 @@ module.exports = {
       date: {
         type: DataTypes.DATE,
         allowNull : false,
-      },
+      },*/
       createdAt: {
         allowNull: false,
         type: DataTypes.DATE

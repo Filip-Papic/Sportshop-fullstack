@@ -8,6 +8,7 @@ function init() {
             email: document.getElementById('email').value,
             password: document.getElementById('password').value,
             admin: document.getElementById('admin').checked,
+            moderator: document.getElementById('moderator').checked,
             adress: document.getElementById('adress').value,
             postalCode: document.getElementById('postalCode').value,
             city: document.getElementById('city').value,

@@ -12,6 +12,14 @@ li {
   color: white;
 }
 
+label {
+  color: white;
+}
+
+div {
+  color: white;
+}
+
 button{
   display: inline-block;
   outline: 0;

@@ -32,6 +32,11 @@ module.exports = {
         allowNull: false,
         defaultValue: false
       },
+      moderator:{
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false
+      },
       adress: {
         type: DataTypes.STRING,
         allowNull: false

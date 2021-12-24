@@ -50,7 +50,7 @@ function initCategories() {
             name: document.getElementById('catN').value
         };
 
-        fetch('http://127.0.0.1:8000/api/admin/categories', {
+        fetch('http://127.0.0.1:8000/api/categories', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -76,7 +76,7 @@ function initCategories() {
             name: document.getElementById('catN').value
         };
 
-        fetch('http://127.0.0.1:8000/api/admin/categories/' + data.id, {
+        fetch('http://127.0.0.1:8000/api/categories/' + data.id, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -95,7 +95,7 @@ function initCategories() {
             id: document.getElementById('deleteCatID').value
         };
 
-        fetch('http://127.0.0.1:8000/api/admin/categories/' + data.id, {
+        fetch('http://127.0.0.1:8000/api/categories/' + data.id, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',

@@ -69,7 +69,7 @@ function initUsers() {
             country: document.getElementById('userCO').value
         };
 
-        fetch('http://127.0.0.1:8000/api/admin/users/' + data.id, {
+        fetch('http://127.0.0.1:8000/api/users/' + data.id, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -88,7 +88,7 @@ function initUsers() {
             id: document.getElementById('delUserID').value
         };
 
-        fetch('http://127.0.0.1:8000/api/admin/users/' + data.id, {
+        fetch('http://127.0.0.1:8000/api/users/' + data.id, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',

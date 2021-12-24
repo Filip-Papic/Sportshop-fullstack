@@ -70,7 +70,7 @@ function initProducts() {
             categoryID: document.getElementById('productC').value
         };
 
-        fetch('http://127.0.0.1:8000/api/admin/products', {
+        fetch('http://127.0.0.1:8000/api/products', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -109,7 +109,7 @@ function initProducts() {
             quantityStock: document.getElementById('productQ').value
         };
 
-        fetch('http://127.0.0.1:8000/api/admin/products/' + data.id, {
+        fetch('http://127.0.0.1:8000/api/products/' + data.id, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -128,7 +128,7 @@ function initProducts() {
             id: document.getElementById('delProductID').value
         };
 
-        fetch('http://127.0.0.1:8000/api/admin/products/' + data.id, {
+        fetch('http://127.0.0.1:8000/api/products/' + data.id, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
@@ -137,5 +137,53 @@ function initProducts() {
             body: JSON.stringify(data)
         })
             .then( el => {console.log(data);});
+    });
+    
+    document.getElementById('orderBtn').addEventListener('click', e => {
+        e.preventDefault();
+
+        const data1 = {
+            productID: document.getElementById('orderProductID').value,
+            quantity: document.getElementById('orderQuantity').value
+        }
+
+        const data = {
+            productID: document.getElementById('orderProductID').value,
+            quantityTotal: document.getElementById('orderQuantity').value
+        };
+
+        fetch('http://127.0.0.1:8000/api/orderProducts', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify(data1)
+        })
+            .then( res => res.json() )
+            .then( el => {
+                if (el.msg) {
+                    alert(el.msg);
+                } else {
+                    console.log('Naruceno');
+                }
+            })
+       
+        fetch('http://127.0.0.1:8000/api/orders', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify(data)
+        })
+            .then( res => res.json() )
+            .then( el => {
+                if (el.msg) {
+                    alert(el.msg);
+                } else {
+                    console.log('Naruceno');
+                }
+            })
     });
 }
