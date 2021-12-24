@@ -11,6 +11,10 @@ module.exports = {
       quantityTotal: {
         type: DataTypes.INTEGER
       },
+      userId: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+      },
       /*
       priceTotal: {
         type: DataTypes.FLOAT

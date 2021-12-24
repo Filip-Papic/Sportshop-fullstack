@@ -15,11 +15,16 @@ function initOrders() {
                 lst.innerHTML = ``;
                 
                 data.forEach( el => {
-                    lst.innerHTML += `<li>OrderID: ${el.id},
-                                        BuyerID: ${el.user.id},
+                    lst.innerHTML += `<li>
+                                        BuyerID: ${el.userID},
+                                        ProductID: ${el.productID}
+                                        </li>` 
+                                        /*`<li>OrderID: ${el.id},
+                                        BuyerID: ${el.userID},
                                         ProductID: ${el.productID}
                                         Quantity: ${el.quantityTotal},
-                                        Date: ${el.createdAt}</li>` 
+                                        Date: ${el.createdAt}
+                                        </li>`*/
                 
                 });
             });

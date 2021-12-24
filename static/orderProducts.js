@@ -15,6 +15,7 @@ function initOrderProducts(){
                 
                 data.forEach( el => {
                     lst.innerHTML += `<li>OrderID: ${el.id},
+                                        UserID: ${el.userID},
                                         ProductID: ${el.productID},
                                         Quantity: ${el.quantity}</li>`;
                 });

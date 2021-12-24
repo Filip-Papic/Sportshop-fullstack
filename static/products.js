@@ -142,15 +142,15 @@ function initProducts() {
     document.getElementById('orderBtn').addEventListener('click', e => {
         e.preventDefault();
 
-        const data1 = {
-            productID: document.getElementById('orderProductID').value,
-            quantity: document.getElementById('orderQuantity').value
-        }
-
         const data = {
             productID: document.getElementById('orderProductID').value,
             quantityTotal: document.getElementById('orderQuantity').value
         };
+        
+        const data1 = {
+            productID: document.getElementById('orderProductID').value,
+            quantity: document.getElementById('orderQuantity').value
+        }
 
         fetch('http://127.0.0.1:8000/api/orderProducts', {
             method: 'POST',

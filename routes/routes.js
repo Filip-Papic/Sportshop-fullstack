@@ -28,7 +28,7 @@ function authToken(req, res, next) {
 route.use(authToken);
 
 route.get('/users', (req, res) => {      
-    Users.findOne({ where: { id: req.user.userId } })
+    Users.findOne({ where: { id: req.user.userID } })
         .then( usr => {
             if (usr.admin) {
                 Users.findAll()
@@ -42,7 +42,7 @@ route.get('/users', (req, res) => {
 });
 
 route.get('/users/:id', (req, res) => {
-    Users.findOne({ where: { id: req.user.userId } })
+    Users.findOne({ where: { id: req.user.userID } })
         .then( usr => {
             if (usr.admin) {
                 Users.findOne({ where: { id: req.params.id }})//, include:['orderedProducts'] })
@@ -55,8 +55,8 @@ route.get('/users/:id', (req, res) => {
         .catch( err => res.status(500).json(err) );
 });
 
-route.put('/users/:id', (req, res) => {    //update
-    Users.findOne({ where: { id: req.user.userId } })
+route.put('/users/:id', (req, res) => {    //update !!! user.id = req.body.id => req.user.userID
+    Users.findOne({ where: { id: req.user.userID } })
         .then( usr => {
             if (usr.admin) {
                 Users.findOne({ where: { id: req.params.id } })
@@ -83,7 +83,7 @@ route.put('/users/:id', (req, res) => {    //update
 });
 
 route.delete('/users/:id', (req, res) => { //delete
-    Users.findOne({ where: { id: req.user.userId } })
+    Users.findOne({ where: { id: req.user.userID } })
         .then( usr => {
             if (usr.admin) {
                 Users.findOne({ where: { id: req.params.id } })
@@ -117,7 +117,7 @@ route.get('/products/:id', (req, res) => {
 });
 
 route.post('/products', (req, res) => {
-    Users.findOne({ where: { id: req.user.userId } })
+    Users.findOne({ where: { id: req.user.userID } })
         .then( usr => {
             if (usr.admin || usr.moderator) {
                 Products.create({ id: req.body.id,
@@ -140,7 +140,7 @@ route.post('/products', (req, res) => {
 });
 
 route.put('/products/:id', (req, res) => {   
-    Users.findOne({ where: { id: req.user.userId } })
+    Users.findOne({ where: { id: req.user.userID } })
         .then( usr => {
             if (usr.admin || usr.moderator) {
                 Products.findOne({ where: { id: req.params.id } })
@@ -167,7 +167,7 @@ route.put('/products/:id', (req, res) => {
 });
 
 route.delete('/products/:id', (req, res) => { 
-    Users.findOne({ where: { id: req.user.userId } })
+    Users.findOne({ where: { id: req.user.userID } })
         .then( usr => {
             if (usr.admin || usr.moderator) {
                 Products.findOne({ where: { id: req.params.id } })
@@ -186,7 +186,7 @@ route.delete('/products/:id', (req, res) => {
 });
 
 route.get('/orders', (req, res) => {
-    Orders.findAll({include: ['user','orderedProducts']})
+    Orders.findAll({ include: ['user','orderedProducts']})
         .then( rows => res.json(rows) )
         .catch( err => res.status(500).json(err) );
 });
@@ -198,14 +198,18 @@ route.get('/orders/:id', (req, res) => {
 });
 
 route.post('/orders', (req, res) => {
-        Orders.create({ id: req.body.id,
-                        userID: req.user.id,
-                        quantityTotal: req.body.quantityTotal,
-                        date: req.body.createdAt,
-                        productID: req.product.id
-                    })
-            .then( rows => res.json(rows) )
-            .catch( err => res.status(500).json({msg : 'ovde smo'}) );
+    Users.findOne({ where: { id: req.user.userID } })
+        .then( usr => {
+            Orders.create({ id: req.body.id,
+                            userID: req.user.userID,
+                            productID: req.productID,
+                            quantityTotal: req.body.quantityTotal,
+                            date: req.body.createdAt
+                        })
+                .then( rows => res.json(rows) )
+                .catch( err => res.status(500).json({msg : 'ovde smo'}) );
+        })
+        .catch( err => res.status(500).json(err) ); 
 });
 
 route.put('/orders/:id', (req, res) => {   
@@ -266,7 +270,7 @@ route.get('/categories/:id', (req, res) => {
 });
 
 route.post('/categories', (req, res) => {
-    Users.findOne({ where: { id: req.user.userId } })
+    Users.findOne({ where: { id: req.user.userID } })
         .then( usr => {
             if (usr.admin || usr.moderator) {
                 Categories.create({ name: req.body.name })
@@ -279,7 +283,7 @@ route.post('/categories', (req, res) => {
         .catch( err => res.status(500).json(err) );
 });
 route.put('/categories/:id', (req, res) => {   
-    Users.findOne({ where: { id: req.user.userId } })
+    Users.findOne({ where: { id: req.user.userID } })
         .then( usr => {
             if (usr.admin || usr.moderator) {
                 Categories.findOne({ where: { id: req.params.id } })
@@ -300,7 +304,7 @@ route.put('/categories/:id', (req, res) => {
 });
 
 route.delete('/categories/:id', (req, res) => { 
-    Users.findOne({ where: { id: req.user.userId } })
+    Users.findOne({ where: { id: req.user.userID } })
         .then( usr => {
             if (usr.admin || usr.moderator) {
                 Categories.findOne({ where: { id: req.params.id } })
@@ -331,14 +335,18 @@ route.get('/orderproducts/:id', (req, res) => {
 });
 
 route.post('/orderproducts', (req, res) => {
-    OrderProducts.create({ id: req.body.id,
-                    userID: req.user.userID,
-                    orderID: req.body.orderID,
-                    productID: req.body.productID,
-                    quantity: req.body.quantity
-                })
-        .then( rows => res.json(rows) )
-        .catch( err => res.status(500).json(err) );
+    Users.findOne({ where: { id: req.user.userID } })
+        .then( usr => {
+            OrderProducts.create({ id: req.body.id,
+                            userID: req.user.userID,
+                            orderID: req.body.orderID,
+                            productID: req.body.productID,
+                            quantity: req.body.quantity
+                        })
+                .then( rows => res.json(rows) )
+                .catch( err => res.status(500).json(err) );
+        })
+        .catch( err => res.status(500).json(err) ); 
 });
 
 route.put('/orderproducts/:id', (req, res) => {   

@@ -32,7 +32,7 @@ app.post('/register', (req, res) => {
     Users.create(obj).then( rows => {
         
         const usr = {
-            userId: rows.id,
+            userID: rows.id,
             user: rows.name
         };
 
@@ -51,7 +51,7 @@ app.post('/login', (req, res) => {
 
             if (bcrypt.compareSync(req.body.password, usr.password)) {
                 const obj = {
-                    userId: usr.id,
+                    userID: usr.id,
                     user: usr.name
                 };
         
