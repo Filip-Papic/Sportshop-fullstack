@@ -105,7 +105,7 @@ route.delete('/users/:id', (req, res) => { //delete
 });
 
 route.get('/products', (req, res) => {
-    Products.findAll({include: ['category', 'orderedProducts']}) 
+    Products.findAll({include: ['category']}) 
         .then( rows => res.json(rows) )
         .catch( err => res.status(500).json(err) );
 });

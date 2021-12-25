@@ -16,7 +16,7 @@ function initOrders() {
             
                 data.forEach( el => {
                     console.log(el.userID + ' ' + el.user.id)
-                    if(el.userID != el.user.id){
+                    if(el.userID == el.user.id){
                         lst.innerHTML += `<li>OrderID: ${el.id},
                                         UserID: ${el.user.id},
                                         User name: ${el.user.name},
