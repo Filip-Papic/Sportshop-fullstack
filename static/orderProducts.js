@@ -1,7 +1,6 @@
 const cookies = document.cookie.split('=');
 const token = cookies[cookies.length - 1];
 
-
 function initOrderProducts(){
     
     fetch('http://127.0.0.1:8000/api/orderProducts', {
@@ -15,7 +14,8 @@ function initOrderProducts(){
                 
                 data.forEach( el => {
                     lst.innerHTML += `<li>OrderID: ${el.id},
-                                        UserID: ${el.userID},
+                                        UserID: ${el.user.id},
+                                        User name: ${el.user.name},     
                                         ProductID: ${el.productID},
                                         Quantity: ${el.quantity}</li>`;
                 });

@@ -11,8 +11,9 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      this.belongsTo(models.Orders, {foreignKey: 'orderID', as: 'orderedProducts'})
-      this.belongsTo(models.Products, {foreignKey: 'productID'})
+      //this.belongsTo(models.Orders, {foreignKey: 'orderID', as: 'orderedProducts'})
+      //this.belongsTo(models.Products, {foreignKey: 'productID'})
+      this.belongsTo(models.Users, {foreignKey: 'userId', as: 'user'});
     }
   };
   OrderProducts.init({
@@ -20,10 +21,10 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true,
       type: DataTypes.INTEGER
     },
-
     orderID: DataTypes.INTEGER,
     productID: DataTypes.INTEGER,
-    quantity: DataTypes.INTEGER
+    quantity: DataTypes.INTEGER,
+    userID: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'OrderProducts',

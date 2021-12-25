@@ -11,9 +11,19 @@ module.exports = {
       quantityTotal: {
         type: DataTypes.INTEGER
       },
-      userId: {
+      userID: {
         type: DataTypes.INTEGER,
         allowNull: false
+      },
+      productID: {
+        type: DataType.INTEGER,
+        allowNull: false,
+        references: {
+          model: 'Products',
+          key: 'id'
+        },
+        onDelete: 'cascade',
+        onUpdate: 'cascade'
       },
       /*
       priceTotal: {

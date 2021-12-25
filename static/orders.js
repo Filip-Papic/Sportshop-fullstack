@@ -2,9 +2,9 @@ const cookies = document.cookie.split('=');
 const token = cookies[cookies.length - 1];
 
 function initOrders() {
-    document.getElementById('findAllOrdersBtn').addEventListener('click', e => {
+    document.getElementById('findAllOrdersBtn').addEventListener('click', e => { //get OrderProducts
 
-        fetch('http://127.0.0.1:8000/api/orders', {
+        fetch('http://127.0.0.1:8000/api/orderProducts', {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
@@ -13,23 +13,20 @@ function initOrders() {
             .then( data => {
                 const lst = document.getElementById('orderList');
                 lst.innerHTML = ``;
-                
+            
                 data.forEach( el => {
-                    lst.innerHTML += `<li>
-                                        BuyerID: ${el.userID},
-                                        ProductID: ${el.productID}
-                                        </li>` 
-                                        /*`<li>OrderID: ${el.id},
-                                        BuyerID: ${el.userID},
-                                        ProductID: ${el.productID}
-                                        Quantity: ${el.quantityTotal},
-                                        Date: ${el.createdAt}
-                                        </li>`*/
-                
+                    console.log(el.userID + ' ' + el.user.id)
+                    if(el.userID != el.user.id){
+                        lst.innerHTML += `<li>OrderID: ${el.id},
+                                        UserID: ${el.user.id},
+                                        User name: ${el.user.name},
+                                        ProductID: ${el.productID},
+                                        Quantity: ${el.quantity}</li>`;
+                         }
                 });
             });
     })
-        
+    
     document.getElementById('findOrderBtn').addEventListener('click', e => {
 
         const id =  document.getElementById('findOrderID').value
@@ -95,8 +92,35 @@ function initOrders() {
             .then( el => {console.log(data);});
     });
 }
-/*
-    document.getElementById('addOrderBtn').addEventListener('click', e => {
+/*    document.getElementById('findAllOrdersBtn').addEventListener('click', e => { //get orders
+
+        fetch('http://127.0.0.1:8000/api/orders', {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
+            .then( res => res.json() )
+            .then( data => {
+                const lst = document.getElementById('orderList');
+                lst.innerHTML = ``;
+                
+                data.forEach( el => {
+                    lst.innerHTML += `<li>OrderID: ${el.id},
+                                        BuyerID: ${el.userID},
+                                        ProductID: ${el.productID}
+                                        </li>` 
+                                        /*`<li>OrderID: ${el.id},
+                                        BuyerID: ${el.userID},
+                                        ProductID: ${el.productID}
+                                        Quantity: ${el.quantityTotal},
+                                        Date: ${el.createdAt}
+                                        </li>`
+                
+                });
+            });
+    })
+
+    document.getElementById('addOrderBtn').addEventListener('click', e => { //post orders
         e.preventDefault();
 
         fetch('http://127.0.0.1:8000/api/orders', {

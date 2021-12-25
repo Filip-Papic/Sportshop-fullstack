@@ -28,6 +28,26 @@ module.exports = {
         onDelete: 'cascade',
         onUpdate: 'cascade'
       },
+      userID: {
+        type: DataType.INTEGER,
+        allowNull: false,
+        references: {
+          model: 'Orders',
+          key: 'userID'
+        },
+        onDelete: 'cascade',
+        onUpdate: 'cascade'
+      },
+      userID: {
+        type: DataType.INTEGER,
+        allowNull: false,
+        references: {
+          model: 'Users',
+          key: 'userId'
+        },
+        onDelete: 'cascade',
+        onUpdate: 'cascade'
+      },
       quantity: {
         type: DataType.INTEGER
       },

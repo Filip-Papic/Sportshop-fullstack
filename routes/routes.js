@@ -31,7 +31,7 @@ route.get('/users', (req, res) => {
     Users.findOne({ where: { id: req.user.userID } })
         .then( usr => {
             if (usr.admin) {
-                Users.findAll()
+                Users.findAll({include: 'orders'})
                     .then( rows => res.json(rows) )
                     .catch( err => res.status(500).json(err) );
             } else {
@@ -186,7 +186,7 @@ route.delete('/products/:id', (req, res) => {
 });
 
 route.get('/orders', (req, res) => {
-    Orders.findAll({ include: ['user','orderedProducts']})
+    Orders.findAll({ include: ['user']})
         .then( rows => res.json(rows) )
         .catch( err => res.status(500).json(err) );
 });
@@ -202,7 +202,7 @@ route.post('/orders', (req, res) => {
         .then( usr => {
             Orders.create({ id: req.body.id,
                             userID: req.user.userID,
-                            productID: req.productID,
+                            productID: req.body.productID,
                             quantityTotal: req.body.quantityTotal,
                             date: req.body.createdAt
                         })
@@ -323,7 +323,7 @@ route.delete('/categories/:id', (req, res) => {
 });
 
 route.get('/orderproducts', (req, res) => {
-    OrderProducts.findAll({include: ['orderedProducts']} )
+    OrderProducts.findAll({ include: 'user'})
         .then( rows => res.json(rows) )
         .catch( err => res.status(500).json(err) );
 });
@@ -339,8 +339,9 @@ route.post('/orderproducts', (req, res) => {
         .then( usr => {
             OrderProducts.create({ id: req.body.id,
                             userID: req.user.userID,
-                            orderID: req.body.orderID,
+                            userId: req.body.userId,
                             productID: req.body.productID,
+                            orderID: req.body.orderId,
                             quantity: req.body.quantity
                         })
                 .then( rows => res.json(rows) )

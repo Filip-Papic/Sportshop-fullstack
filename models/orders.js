@@ -11,8 +11,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      this.belongsToMany(models.Products, {through: { model: models.OrderProducts, unique: false}, 
-                                                    foreignKey: 'orderID', as: 'orderedProducts'})
+      this.belongsToMany(models.Products, {through: models.OrderProducts })
       this.belongsTo(models.Users, {foreignKey: 'userID', as: 'user'})
     }
   };
@@ -23,6 +22,10 @@ module.exports = (sequelize, DataTypes) => {
     },
     quantityTotal:{
       type: DataTypes.INTEGER
+    },
+    productID: {
+      type: DataTypes.INTEGER,
+      allowNull: false
     },
    /* priceTotal: {
       type: DataTypes.FLOAT
