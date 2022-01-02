@@ -23,4 +23,9 @@ function init() {
                 }
             });
     });
+
+    document.getElementById('register').addEventListener('click', e => { 
+        document.cookie = `token=;SameSite=Lax`;
+        window.location.href = 'register.html';
+    });
 }

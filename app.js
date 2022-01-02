@@ -1,15 +1,19 @@
 const express = require('express');
 const { sequelize, Users, Products, Orders, Categories, OrderProducts } = require('./models');
-const msgs = require('./routes/routes');
+const users = require('./routes/userRoutes');
+const products = require('./routes/productRoutes');
+const orders = require('./routes/orderRoutes');
+const categories = require('./routes/categoryRoutes');
 const path = require('path');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
 const app = express();
 
-app.use('/api', msgs);
-//app.use('/products', productRoutes); !!!!!!!!!! kasnije
-//app.use('/orders', orderRoutes);
+app.use('/admin', users);
+app.use('/admin', products);
+app.use('/admin', orders);
+app.use('/admin', categories);
 
 function getCookies(req) {
     if (req.headers.cookie == null) return {};

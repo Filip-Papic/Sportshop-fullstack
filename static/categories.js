@@ -6,7 +6,7 @@ function initCategories() {
         
         document.getElementById('catList').value = [];
 
-        fetch('http://127.0.0.1:8000/api/categories', {
+        fetch('http://127.0.0.1:8000/admin/categories', {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
@@ -28,17 +28,21 @@ function initCategories() {
 
         document.getElementById('catList').value = [];
 
-        fetch('http://127.0.0.1:8000/api/categories/' + id, {
+        fetch('http://127.0.0.1:8000/admin/categories/' + id, {
         headers: {
             'Authorization': `Bearer ${token}`
         }
     })
         .then( res => res.json() )
         .then( el => {
-                if(id.length > 0){
-                    const lst = document.getElementById('catList');
+                if (el.msg) {
+                    alert(el.msg);
+                } else {
+                    if(id.length > 0){
+                        const lst = document.getElementById('catList');
 
-                    lst.innerHTML = `<li>ID: ${el.id}, Name: ${el.name}</li>`;
+                        lst.innerHTML = `<li>ID: ${el.id}, Name: ${el.name}</li>`;
+                    }
                 }
             });
         })
@@ -50,7 +54,7 @@ function initCategories() {
             name: document.getElementById('catN').value
         };
 
-        fetch('http://127.0.0.1:8000/api/categories', {
+        fetch('http://127.0.0.1:8000/admin/categories', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -76,7 +80,7 @@ function initCategories() {
             name: document.getElementById('catN').value
         };
 
-        fetch('http://127.0.0.1:8000/api/categories/' + data.id, {
+        fetch('http://127.0.0.1:8000/admin/categories/' + data.id, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -85,7 +89,13 @@ function initCategories() {
             body: JSON.stringify(data)
         })
             .then( res => res.json() )
-            .then( el => {console.log(el);});
+            .then( el => {
+                if (el.msg) {
+                    alert(el.msg);
+                } else {
+                    console.log(el);
+                }
+            });
     });
 
     document.getElementById('deleteCatBtn').addEventListener('click', e => {
@@ -95,7 +105,7 @@ function initCategories() {
             id: document.getElementById('deleteCatID').value
         };
 
-        fetch('http://127.0.0.1:8000/api/categories/' + data.id, {
+        fetch('http://127.0.0.1:8000/admin/categories/' + data.id, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
@@ -103,6 +113,11 @@ function initCategories() {
             },
             body: JSON.stringify(data)
         })
-            .then( el => {console.log(data);});
+            .then(res => res.json() )
+            .then( data => {
+                if (data.msg) {
+                    alert(data.msg);
+                }
+            });
     });
 }

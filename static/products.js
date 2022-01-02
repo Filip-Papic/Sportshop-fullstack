@@ -6,7 +6,7 @@ function initProducts() {
         
         document.getElementById('productList').value = [];
 
-        fetch('http://127.0.0.1:8000/api/products', {
+        fetch('http://127.0.0.1:8000/admin/products', {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
@@ -35,13 +35,16 @@ function initProducts() {
 
         document.getElementById('productList').value = [];
 
-        fetch('http://127.0.0.1:8000/api/products/' + id, {
+        fetch('http://127.0.0.1:8000/admin/products/' + id, {
         headers: {
             'Authorization': `Bearer ${token}`
         }
     })
         .then( res => res.json() )
         .then( el => {
+            if(el.msg){
+                alert(el.msg);
+            } else {
                 if(id.length > 0){
                     const lst = document.getElementById('productList');
 
@@ -54,8 +57,9 @@ function initProducts() {
                                         Size: ${el.size},
                                         Quantity in stock: ${el.quantityStock}</li>`;
                 }
-            });
-        })
+            }
+        });
+    })
 
     document.getElementById('addProductBtn').addEventListener('click', e => {
         e.preventDefault();
@@ -70,7 +74,7 @@ function initProducts() {
             categoryID: document.getElementById('productC').value
         };
 
-        fetch('http://127.0.0.1:8000/api/products', {
+        fetch('http://127.0.0.1:8000/admin/products', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -109,7 +113,7 @@ function initProducts() {
             quantityStock: document.getElementById('productQ').value
         };
 
-        fetch('http://127.0.0.1:8000/api/products/' + data.id, {
+        fetch('http://127.0.0.1:8000/admin/products/' + data.id, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -118,7 +122,13 @@ function initProducts() {
             body: JSON.stringify(data)
         })
             .then( res => res.json() )
-            .then( el => {console.log(data);});
+            .then( el => {
+                if (el.msg) {
+                    alert(el.msg);
+                } else {
+                    console.log(data);
+                }
+            });
     });
 
     document.getElementById('deleteProductBtn').addEventListener('click', e => {
@@ -128,7 +138,7 @@ function initProducts() {
             id: document.getElementById('delProductID').value
         };
 
-        fetch('http://127.0.0.1:8000/api/products/' + data.id, {
+        fetch('http://127.0.0.1:8000/admin/products/' + data.id, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
@@ -136,7 +146,12 @@ function initProducts() {
             },
             body: JSON.stringify(data)
         })
-            .then( el => {console.log(data);});
+            .then(res => res.json() )
+            .then( data => {
+                if (data.msg) {
+                    alert(data.msg);
+                }
+            });
     });
     
     document.getElementById('orderBtn').addEventListener('click', e => {
@@ -144,15 +159,32 @@ function initProducts() {
 
         const data = {
             productID: document.getElementById('orderProductID').value,
-            quantityTotal: document.getElementById('orderQuantity').value
-        };
-        
-        const data1 = {
-            productID: document.getElementById('orderProductID').value,
             quantity: document.getElementById('orderQuantity').value
         }
 
-        fetch('http://127.0.0.1:8000/api/orderProducts', {
+        const data1 = {
+            productID: document.getElementById('orderProductID').value,
+            quantityTotal: document.getElementById('orderQuantity').value
+        };
+
+        fetch('http://127.0.0.1:8000/admin/orderProducts', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify(data)
+        })
+            .then( res => res.json() )
+            .then( el => {
+                if (el.msg) {
+                    alert(el.msg);
+                } else {
+                    console.log('Naruceno');
+                }
+            })
+       
+  /*      fetch('http://127.0.0.1:8000/admin/orders', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -168,22 +200,5 @@ function initProducts() {
                     console.log('Naruceno');
                 }
             })
-       
-        fetch('http://127.0.0.1:8000/api/orders', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-            },
-            body: JSON.stringify(data)
-        })
-            .then( res => res.json() )
-            .then( el => {
-                if (el.msg) {
-                    alert(el.msg);
-                } else {
-                    console.log('Naruceno');
-                }
-            })
-    });
+        */ });
 }

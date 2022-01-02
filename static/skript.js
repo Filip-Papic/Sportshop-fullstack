@@ -7,7 +7,7 @@ function initMain() {
         document.cookie = `token=;SameSite=Lax`;
         window.location.href = 'login.html';
     }); 
-    document.getElementById('userBtn').addEventListener('click', e => { 
+    document.getElementById('userBtn').addEventListener('click', e => {
         document.cookie = `token=${token};SameSite=Lax`;
         window.location.href = 'users.html';
     });
@@ -23,7 +23,7 @@ function initMain() {
         document.cookie = `token=${token};SameSite=Lax`;
         window.location.href = 'products.html';
     });
-    document.getElementById('orderProductBtn').addEventListener('click', e => { 
+    document.getElementById('orderProductBtn').addEventListener('click', e => {
         document.cookie = `token=${token};SameSite=Lax`;
         window.location.href = 'orderProducts.html';
     });

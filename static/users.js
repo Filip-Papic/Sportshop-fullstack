@@ -6,7 +6,7 @@ function initUsers() {
         
         document.getElementById('userList').value = [];
 
-        fetch('http://127.0.0.1:8000/api/users', {
+        fetch('http://127.0.0.1:8000/admin/users', {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
@@ -34,13 +34,16 @@ function initUsers() {
 
         document.getElementById('userList').value = [];
 
-        fetch('http://127.0.0.1:8000/api/users/' + id, {
+        fetch('http://127.0.0.1:8000/admin/users/' + id, {
         headers: {
             'Authorization': `Bearer ${token}`
         }
     })
         .then( res => res.json() )
         .then( el => {
+            if (el.msg) {
+                alert(el.msg);
+            } else {
                 if(id.length > 0){
                     const lst = document.getElementById('userList');
 
@@ -52,8 +55,9 @@ function initUsers() {
                                         City: ${el.city},
                                         Country: ${el.country}</li>`;
                 }
-            });
-        })
+            }
+        });
+    })
     
     document.getElementById('updateUserBtn').addEventListener('click', e => {
         e.preventDefault();
@@ -69,7 +73,7 @@ function initUsers() {
             country: document.getElementById('userCO').value
         };
 
-        fetch('http://127.0.0.1:8000/api/users/' + data.id, {
+        fetch('http://127.0.0.1:8000/admin/users/' + data.id, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -78,7 +82,13 @@ function initUsers() {
             body: JSON.stringify(data)
         })
             .then( res => res.json() )
-            .then( el => {console.log(data);});
+            .then( el => {
+                if (el.msg) {
+                    alert(el.msg);
+                } else {
+                    console.log(data);
+                }
+            });
     });
 
     document.getElementById('deleteUserBtn').addEventListener('click', e => {
@@ -88,7 +98,7 @@ function initUsers() {
             id: document.getElementById('delUserID').value
         };
 
-        fetch('http://127.0.0.1:8000/api/users/' + data.id, {
+        fetch('http://127.0.0.1:8000/admin/users/' + data.id, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
@@ -96,6 +106,11 @@ function initUsers() {
             },
             body: JSON.stringify(data)
         })
-            .then( el => {console.log(data);});
+            .then(res => res.json() )
+            .then( data => {
+                if (data.msg) {
+                    alert(data.msg);
+                }
+            });
     });
 }

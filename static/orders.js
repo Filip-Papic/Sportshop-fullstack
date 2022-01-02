@@ -4,7 +4,7 @@ const token = cookies[cookies.length - 1];
 function initOrders() {
     document.getElementById('findAllOrdersBtn').addEventListener('click', e => { //get OrderProducts
 
-        fetch('http://127.0.0.1:8000/api/orderProducts', {
+        fetch('http://127.0.0.1:8000/admin/orderProducts', {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
@@ -33,23 +33,27 @@ function initOrders() {
 
         document.getElementById('orderList').value = [];
 
-        fetch('http://127.0.0.1:8000/api/orders/' + id, {
+        fetch('http://127.0.0.1:8000/admin/orderProducts/' + id, {
         headers: {
             'Authorization': `Bearer ${token}`
         }
         })
             .then( res => res.json() )
             .then( el => {
+                if(el.msg){
+                    alert(el.msg);
+                } else {
                     if(id.length > 0){
                         const lst = document.getElementById('orderList');
 
-                        lst.innerHTML = `<li>ID: ${el.id},
-                                            BuyerID: ${el.userID},
-                                            Price total: ${el.priceTotal}$,
-                                            Quantity: ${el.quantityTotal}, 
-                                            Details: ${el.details}</li>`; 
+                        lst.innerHTML = `<li>OrderID: ${el.id},
+                                            UserID: ${el.user.id},
+                                            User name: ${el.user.name},
+                                            ProductID: ${el.productID},
+                                            Quantity: ${el.quantity}</li>`; 
                     }
-                });
+                }
+            });
         })
 
     document.getElementById('updateOrderBtn').addEventListener('click', e => {
@@ -57,12 +61,11 @@ function initOrders() {
 
         const data = {
             id: document.getElementById('updateOrderID').value,
-            price: document.getElementById('orderP').value,
-            details: document.getElementById('orderD').value,
+            productID: document.getElementById('orderID').value,
             quantity: document.getElementById('orderQ').value
         };
 
-        fetch('http://127.0.0.1:8000/api/orders/' + data.id, {
+        fetch('http://127.0.0.1:8000/admin/orderProducts/' + data.id, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -71,17 +74,23 @@ function initOrders() {
             body: JSON.stringify(data)
         })
             .then( res => res.json() )
-            .then( el => {console.log(data);});
+            .then( el => {
+                if (el.msg) {
+                    alert(el.msg);
+                } else {
+                    console.log(data);
+                }
+            });
     });
 
     document.getElementById('deleteOrderBtn').addEventListener('click', e => {
         e.preventDefault();
 
         const data = {
-            id: document.getElementById('delOrderID').value
+            id: document.getElementById('deleteOrderID').value
         };
 
-        fetch('http://127.0.0.1:8000/api/orders/' + data.id, {
+        fetch('http://127.0.0.1:8000/admin/orderProducts/' + data.id, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
@@ -89,12 +98,17 @@ function initOrders() {
             },
             body: JSON.stringify(data)
         })
-            .then( el => {console.log(data);});
+            .then(res => res.json() )
+            .then( data => {
+                if (data.msg) {
+                    alert(data.msg);
+                }
+            });
     });
 }
 /*    document.getElementById('findAllOrdersBtn').addEventListener('click', e => { //get orders
 
-        fetch('http://127.0.0.1:8000/api/orders', {
+        fetch('http://127.0.0.1:8000/admin/orders', {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
@@ -123,7 +137,7 @@ function initOrders() {
     document.getElementById('addOrderBtn').addEventListener('click', e => { //post orders
         e.preventDefault();
 
-        fetch('http://127.0.0.1:8000/api/orders', {
+        fetch('http://127.0.0.1:8000/admin/orders', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
