@@ -125,8 +125,8 @@ route.get('/orderproducts/:id', (req, res) => {
 });
 
 route.post('/orderproducts', (req, res) => {
-        const valid = orderProductsValid.validate(req.body); // radi bez validacije
-        if(!valid.error){
+        //const valid = orderProductsValid.validate(req.body); // radi bez validacije
+        //if(!valid.error){
             OrderProducts.create({ id: req.body.id,
                             userID: req.user.userID,
                             userId: req.body.userId,
@@ -136,9 +136,9 @@ route.post('/orderproducts', (req, res) => {
                         })
                 .then( rows => res.json(rows) )
                 .catch( err => res.status(500).json(err) );
-        } else {
+        /*} else {
             res.status(422).json({msg: 'Error: ' + valid.error.message });
-        }
+        }*/
 });
 
 route.put('/orderproducts/:id', (req, res) => {   

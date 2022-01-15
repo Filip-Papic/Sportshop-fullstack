@@ -13,6 +13,9 @@ function initUsers() {
         })
             .then( res => res.json() )
             .then( data => {
+                if (data.msg) {
+                    alert(data.msg);
+                } else {
                 const lst = document.getElementById('userList');
                 lst.innerHTML = ``;
                 
@@ -25,8 +28,9 @@ function initUsers() {
                                         City: ${el.city},
                                         Country: ${el.country}</li>`;
                 });
-            });
-        })
+            }
+        });
+    })
         
     document.getElementById('findUserBtn').addEventListener('click', e => {
 
