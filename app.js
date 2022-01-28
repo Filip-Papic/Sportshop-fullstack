@@ -50,11 +50,11 @@ app.get('/register', (req, res) => {
 });
 
 app.get('/login', (req, res) => {
-    res.sendFile('login.html', { root: './static' });//Razdvoj u posebne module sve tri!!!!!!!!
+    res.sendFile('login.html', { root: './static' });
 });
 
-app.get('/', authToken, (req, res) => {             //5.11 vezbe!!!!!!!!!!!!!!!!!!!!!!!
-    res.sendFile('index.html', { root: './static' });//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+app.get('/', authToken, (req, res) => {             
+    res.sendFile('index.html', { root: './static' });
 });
 
 app.use(express.static(path.join(__dirname, 'static')));

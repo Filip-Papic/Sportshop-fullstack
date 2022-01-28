@@ -27,15 +27,6 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       allowNull: false
     },
-   /* priceTotal: {
-      type: DataTypes.FLOAT
-    },
-    details:{
-      type: DataTypes.STRING
-    },
-    date:{
-      type: DataTypes.DATE
-    }*/
   }, {
     sequelize,
     modelName: 'Orders',

@@ -60,7 +60,7 @@ route.get('/users/:id', (req, res) => {
         .catch( err => res.status(500).json(err) );
 });
 
-route.put('/users/:id', (req, res) => {    //update !!! user.id = req.body.id => req.user.userID
+route.put('/users/:id', (req, res) => {    
     Users.findOne({ where: { id: req.user.userID } })
         .then( usr => {
             if (usr.admin) {
@@ -95,7 +95,7 @@ route.put('/users/:id', (req, res) => {    //update !!! user.id = req.body.id =>
         .catch( err => res.status(500).json(err) );
 });
 
-route.delete('/users/:id', (req, res) => { //delete
+route.delete('/users/:id', (req, res) => { 
     Users.findOne({ where: { id: req.user.userID } })
         .then( usr => {
             if (usr.admin) {

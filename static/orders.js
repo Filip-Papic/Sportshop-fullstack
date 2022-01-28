@@ -2,7 +2,7 @@ const cookies = document.cookie.split('=');
 const token = cookies[cookies.length - 1];
 
 function initOrders() {
-    document.getElementById('findAllOrdersBtn').addEventListener('click', e => { //get OrderProducts
+    document.getElementById('findAllOrdersBtn').addEventListener('click', e => {
 
         fetch('http://127.0.0.1:8000/admin/orderProducts', {
             headers: {
@@ -106,56 +106,3 @@ function initOrders() {
             });
     });
 }
-/*    document.getElementById('findAllOrdersBtn').addEventListener('click', e => { //get orders
-
-        fetch('http://127.0.0.1:8000/admin/orders', {
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-        })
-            .then( res => res.json() )
-            .then( data => {
-                const lst = document.getElementById('orderList');
-                lst.innerHTML = ``;
-                
-                data.forEach( el => {
-                    lst.innerHTML += `<li>OrderID: ${el.id},
-                                        BuyerID: ${el.userID},
-                                        ProductID: ${el.productID}
-                                        </li>` 
-                                        /*`<li>OrderID: ${el.id},
-                                        BuyerID: ${el.userID},
-                                        ProductID: ${el.productID}
-                                        Quantity: ${el.quantityTotal},
-                                        Date: ${el.createdAt}
-                                        </li>`
-                
-                });
-            });
-    })
-
-    document.getElementById('addOrderBtn').addEventListener('click', e => { //post orders
-        e.preventDefault();
-
-        fetch('http://127.0.0.1:8000/admin/orders', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-            },
-            //body: JSON.stringify(data)
-        })
-            .then( res => res.json() )
-            .then( el => {
-                if (el.msg) {
-                    alert(el.msg);
-                } else {
-                    document.getElementById('orderList').innerHTML += `<li>OrderID: ${el.id},
-                                                                            BuyerID: ${el.userID},
-                                                                            ProductID: ${el.productID},
-                                                                            Quantity: ${el.quantityTotal}, 
-                                                                            </li>`; 
-                }
-            });
-    });
-*/
