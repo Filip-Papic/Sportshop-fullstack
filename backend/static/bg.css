@@ -1,0 +1,37 @@
+body {
+  background-color: #33475b;
+}
+h2 {
+  color: white;
+}
+p {
+  color: red;
+}
+
+li {
+  color: white;
+}
+
+label {
+  color: white;
+}
+
+div {
+  color: white;
+}
+
+button{
+  display: inline-block;
+  outline: 0;
+  border: 0;
+  height: 70px;
+  width: 150px;
+  font-size: 40px;
+  font-weight: 500;
+  color: #fff;
+  cursor: pointer;
+  background-image: linear-gradient(to right,#20286b,#6a1a6d)!important;
+  border-radius: 3px;
+  padding: 16px 18px 15px;
+  white-space: nowrap;
+}
