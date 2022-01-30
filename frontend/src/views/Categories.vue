@@ -1,6 +1,6 @@
 <template>
-  <div class="home">
-    <h1>Sportswear Shop</h1>
+  <div class="categories">
+    <h1>Categories</h1>
   </div>
 </template>
 
@@ -9,7 +9,7 @@
 //import Header from '@/components/Header.vue'
 
 export default {
-  name: 'Home',
+  name: 'Categories',
   components: {
   }
 }
