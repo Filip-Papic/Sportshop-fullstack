@@ -1,32 +1,46 @@
 <template>
-  <div class="image">
-      <h3>{{ image.title }}</h3>
-      
-      <img v-if="image.primaryImageSmall" :src="image.primaryImageSmall" />
-      <p v-else>Image not available</p>
-
-      <ul>
-          <li>Author: {{ image.artistDisplayName }}</li>
-          <li>Highlight: {{ image.isHighlight }}</li>
-          <li>Year acquired: {{ image.accessionYear }}</li>
-      </ul>
+  <div>
+    <Header :subtitle="subtitle"/>
+    <SingleArt v-if="image" :image="image" />
+    <Comments v-if="image" :image="image" />
   </div>
 </template>
 
 <script>
 
-    export default {
-        name: 'Single',
-        props: {
-            image: Object
-        }
-    }
-</script>
+  import Header from '@/components/Header.vue';
+  import SingleArt from '@/components/SingleArt.vue';
+  import Comments from '@/components/Comments.vue';
+  import { mapActions } from 'vuex';
 
-<style scoped>
-    .image {
-        margin-top: 10px;
-        border-style: dashed;
-        border-radius: 15px;
+  export default {
+    name: 'Single',
+
+    components: {
+      Header,
+      SingleArt,
+      Comments
+    },
+
+    data() {
+      return {
+        image: null,
+        subtitle: ''
+      }
+    },
+    
+    methods: {
+      ...mapActions([
+        'getItem'
+      ])
+    },
+
+    mounted() {
+      this.getItem(this.$route.params.id).then( res => {
+        this.image = res;
+        this.subtitle = this.image.title;
+      });
     }
-</style>
+  }
+
+</script>

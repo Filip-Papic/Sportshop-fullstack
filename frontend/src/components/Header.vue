@@ -1,19 +1,25 @@
 <template>
-  <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/categories">Categories</router-link> |
-      <router-link to="/products">Products</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
+  <div class="title">
+    <h1>Sportswear Shop</h1>
+    <h3 v-if="subtitle">{{ subtitle }}</h3>
+  </div>
 </template>
 
 <script>
-// @ is an alias to /src
-//import Header from '@/components/Header.vue'
+  export default {
+    name: 'Header',
+    components: {
+    },
 
-export default {
-  name: 'Header',
-  components: {
+    props: {
+      subtitle: String
+    }
   }
-}
 </script>
+
+<style scoped>
+  .title {
+    padding-top: 15px;
+    margin-bottom: 25px;
+  }
+</style>

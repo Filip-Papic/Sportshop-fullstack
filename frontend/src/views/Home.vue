@@ -1,16 +1,22 @@
 <template>
-  <div class="home">
-    <h1>Sportswear Shop</h1>
+  <div id="app">
+    <Header subtitle="Home"/>
+    <img
+      src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/73/The_Metropolitan_Museum_of_Art_Logo.svg/1028px-The_Metropolitan_Museum_of_Art_Logo.svg.png"
+      width="200"
+      alt="Logo"
+    />
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-//import Header from '@/components/Header.vue'
+  import Header from '@/components/Header.vue'
 
-export default {
-  name: 'Home',
-  components: {
+  export default {
+    name: 'Home',
+    
+    components: {
+      Header
+    }
   }
-}
 </script>
