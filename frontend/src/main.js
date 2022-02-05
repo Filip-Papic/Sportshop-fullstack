@@ -13,7 +13,7 @@ Vue.use(IconsPlugin);
 
 Vue.use(new VueSocketIO({
   debug: false,
-  connection: 'http://skript-project.herokuapp.com',
+  connection: 'ws://127.0.0.1:8080',
   vuex: {
       store,
       actionPrefix: 'socket_',

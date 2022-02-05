@@ -11,7 +11,7 @@ export default new Vuex.Store({
     token: ''
   },
 
-  mutations: {
+  mutations: { //sinhrone
     addItem(state, item) {
       state.items.push(item);
     },
@@ -47,7 +47,7 @@ export default new Vuex.Store({
     }
   },
 
-  actions: {
+  actions: { //asinhrone
     fetchDepartments({ commit }) {
       fetch('https://collectionapi.metmuseum.org/public/collection/v1/departments')
         .then( obj => obj.json() )
@@ -107,7 +107,7 @@ export default new Vuex.Store({
     },
 
     register({ commit }, obj) {
-      fetch('/api_register', {
+      fetch('/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(obj)
@@ -116,7 +116,7 @@ export default new Vuex.Store({
     },
 
     login({ commit }, obj) {
-      fetch('/api_login', {
+      fetch('/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(obj)
@@ -134,5 +134,9 @@ export default new Vuex.Store({
       const comment = JSON.parse(msg);
       commit('addComment', { artId: comment.artId, comment: comment });
     }
+  },
+
+  modules: {
+
   }
 })
