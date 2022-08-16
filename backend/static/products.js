@@ -6,7 +6,7 @@ function initProducts() {
         
         document.getElementById('productList').value = [];
 
-        fetch('http://127.0.0.1:8000/admin/products', {
+        fetch('http://127.0.0.1:8100/admin/products', {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
@@ -35,7 +35,7 @@ function initProducts() {
 
         document.getElementById('productList').value = [];
 
-        fetch('http://127.0.0.1:8000/admin/products/' + id, {
+        fetch('http://127.0.0.1:8100/admin/products/' + id, {
         headers: {
             'Authorization': `Bearer ${token}`
         }
@@ -74,7 +74,7 @@ function initProducts() {
             categoryID: document.getElementById('productC').value
         };
 
-        fetch('http://127.0.0.1:8000/admin/products', {
+        fetch('http://127.0.0.1:8100/admin/products', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -113,7 +113,7 @@ function initProducts() {
             quantityStock: document.getElementById('productQ').value
         };
 
-        fetch('http://127.0.0.1:8000/admin/products/' + data.id, {
+        fetch('http://127.0.0.1:8100/admin/products/' + data.id, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -138,7 +138,7 @@ function initProducts() {
             id: document.getElementById('delProductID').value
         };
 
-        fetch('http://127.0.0.1:8000/admin/products/' + data.id, {
+        fetch('http://127.0.0.1:8100/admin/products/' + data.id, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
@@ -167,7 +167,7 @@ function initProducts() {
             quantityTotal: document.getElementById('orderQuantity').value
         };
 
-        fetch('http://127.0.0.1:8000/admin/orderProducts', {
+        fetch('http://127.0.0.1:8100/admin/orderProducts', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -184,7 +184,7 @@ function initProducts() {
                 }
             })
        
-  /*      fetch('http://127.0.0.1:8000/admin/orders', {
+  /*      fetch('http://127.0.0.1:8100/admin/orders', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

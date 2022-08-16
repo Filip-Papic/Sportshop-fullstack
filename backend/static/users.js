@@ -6,7 +6,7 @@ function initUsers() {
         
         document.getElementById('userList').value = [];
 
-        fetch('http://127.0.0.1:8000/admin/users', {
+        fetch('http://127.0.0.1:8100/admin/users', {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
@@ -38,7 +38,7 @@ function initUsers() {
 
         document.getElementById('userList').value = [];
 
-        fetch('http://127.0.0.1:8000/admin/users/' + id, {
+        fetch('http://127.0.0.1:8100/admin/users/' + id, {
         headers: {
             'Authorization': `Bearer ${token}`
         }
@@ -77,7 +77,7 @@ function initUsers() {
             country: document.getElementById('userCO').value
         };
 
-        fetch('http://127.0.0.1:8000/admin/users/' + data.id, {
+        fetch('http://127.0.0.1:8100/admin/users/' + data.id, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -102,7 +102,7 @@ function initUsers() {
             id: document.getElementById('delUserID').value
         };
 
-        fetch('http://127.0.0.1:8000/admin/users/' + data.id, {
+        fetch('http://127.0.0.1:8100/admin/users/' + data.id, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',

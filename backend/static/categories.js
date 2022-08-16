@@ -6,7 +6,7 @@ function initCategories() {
         
         document.getElementById('catList').value = [];
 
-        fetch('http://127.0.0.1:8000/admin/categories', {
+        fetch('http://127.0.0.1:8100/admin/categories', {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
@@ -28,7 +28,7 @@ function initCategories() {
 
         document.getElementById('catList').value = [];
 
-        fetch('http://127.0.0.1:8000/admin/categories/' + id, {
+        fetch('http://127.0.0.1:8100/admin/categories/' + id, {
         headers: {
             'Authorization': `Bearer ${token}`
         }
@@ -54,7 +54,7 @@ function initCategories() {
             name: document.getElementById('catN').value
         };
 
-        fetch('http://127.0.0.1:8000/admin/categories', {
+        fetch('http://127.0.0.1:8100/admin/categories', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -80,7 +80,7 @@ function initCategories() {
             name: document.getElementById('catN').value
         };
 
-        fetch('http://127.0.0.1:8000/admin/categories/' + data.id, {
+        fetch('http://127.0.0.1:8100/admin/categories/' + data.id, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -105,7 +105,7 @@ function initCategories() {
             id: document.getElementById('deleteCatID').value
         };
 
-        fetch('http://127.0.0.1:8000/admin/categories/' + data.id, {
+        fetch('http://127.0.0.1:8100/admin/categories/' + data.id, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',

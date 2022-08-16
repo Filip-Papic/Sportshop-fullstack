@@ -3,7 +3,7 @@ const token = cookies[cookies.length - 1];
 
 function initOrderProducts(){
     
-    fetch('http://127.0.0.1:8000/admin/orderProducts', {
+    fetch('http://127.0.0.1:8100/admin/orderProducts', {
             headers: {
                 'Authorization': `Bearer ${token}`
             }

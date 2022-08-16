@@ -2,10 +2,13 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import Home from '@/views/Home.vue';
 import Department from '@/views/Department.vue';
+import Category from '@/views/Category.vue';
 import Single from '@/views/Single.vue';
 import Search from '@/views/Search.vue';
 import Register from '@/views/Register.vue';
 import Login from '@/views/Login.vue';
+import ProductView from '@/views/ProductView.vue';
+import ProductsView from '@/views/ProductsView.vue';
 
 Vue.use(VueRouter);
 
@@ -16,9 +19,24 @@ const routes = [
     component: Home
   },
   {
+    path: '/category/:id/:name',
+    name: 'Category',
+    component: Category
+  },
+  {
     path: '/department/:id/:name',
     name: 'Department',
     component: Department
+  },
+  {
+    path: '/products',
+    name: 'ProductsView',
+    component: ProductsView
+  },
+  {
+    path: '/product/:id',
+    name: 'ProductView',
+    component: ProductView
   },
   {
     path: '/single/:id',

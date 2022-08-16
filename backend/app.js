@@ -1,30 +1,35 @@
 const express = require('express');
 const { sequelize, Users, Products, Orders, Categories, OrderProducts } = require('./models');
-const users = require('./routes/userRoutes');
-const products = require('./routes/productRoutes');
-const orders = require('./routes/orderRoutes');
-const categories = require('./routes/categoryRoutes');
 const path = require('path');
 const jwt = require('jsonwebtoken');
+const cors = require('cors');
 const http = require('http');
 const { Server } = require("socket.io");
 require('dotenv').config();
+const port = 8000;
 
 const app = express();
+
 const server = http.createServer(app);
 const io = new Server(server, {
     cors: {
         origin: 'http://127.0.0.1:8080',
         methods: ['GET', 'POST'],
+        //transports: ['websocket', 'polling'],
+        //allowedHeaders: ['Access-Control-Allow-Origin'],
         credentials: true
     },
     allowEI03: true
 });
 
-app.use('/admin', users);
-app.use('/admin', products);
-app.use('/admin', orders);
-app.use('/admin', categories);
+/* var corsOptions = {//ovo treba samo dok ne popravim socket io valjda
+    origin: 'http://127.0.0.1:8080',
+    optionsSuccessStatus: 200,
+    credentials: true // !!!!!!!!!!!!!
+}
+//app.use(express.json());
+app.use(cors(corsOptions)); */
+
 
 function getCookies(req) {
     if (req.headers.cookie == null) return {};
@@ -74,20 +79,20 @@ function authSocket(msg, next) {
 io.on('connection', socket => {
     socket.use(authSocket);
 
-    // socket.on('comment', msg => {
-    //     socket.on('comment', msg => {
-    //         Messages.create({ body: msg.body, artId: msg.artId, userId: msg.user.userId })
-    //             .then( rows => {
-    //                 Messages.findOne({ where: { id: rows.id }, include: ['user'] })
-    //                     .then( msg => io.emit('comment', JSON.stringify(msg)) ) 
-    //             }).catch( err => res.status(500).json(err) );
-    //     });
-    // });
+    /* socket.on('comment', msg => {
+        socket.on('comment', msg => {
+            Messages.create({ body: msg.body, artId: msg.artId, userId: msg.user.userId })
+                .then( rows => {
+                    Messages.findOne({ where: { id: rows.id }, include: ['user'] })
+                        .then( msg => io.emit('comment', JSON.stringify(msg)) ) 
+                }).catch( err => res.status(500).json(err) );
+        });
+    }); */
 
     socket.on('error', err => socket.emit('error', err.message) );
 });
 
-app.get('/register', (req, res) => {
+/* app.get('/register', (req, res) => {
     res.sendFile('register.html', { root: './static' });
 });
 
@@ -97,10 +102,13 @@ app.get('/login', (req, res) => {
 
 app.get('/', authToken, (req, res) => {             
     res.sendFile('index.html', { root: './static' });
-});
+}); */
 
 app.use(express.static(path.join(__dirname, 'static')));
 
-app.listen({ port: 8000 }, async () => {
+app.set('port', process.env.PORT || 8000);//!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+server.listen({ port: port }, async () => {
     await sequelize.authenticate();
+    console.log(`Connection has been established successfully on port ${port}.`);
 });

@@ -4,7 +4,7 @@ const token = cookies[cookies.length - 1];
 function initOrders() {
     document.getElementById('findAllOrdersBtn').addEventListener('click', e => {
 
-        fetch('http://127.0.0.1:8000/admin/orderProducts', {
+        fetch('http://127.0.0.1:8100/admin/orderProducts', {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
@@ -33,7 +33,7 @@ function initOrders() {
 
         document.getElementById('orderList').value = [];
 
-        fetch('http://127.0.0.1:8000/admin/orderProducts/' + id, {
+        fetch('http://127.0.0.1:8100/admin/orderProducts/' + id, {
         headers: {
             'Authorization': `Bearer ${token}`
         }
@@ -65,7 +65,7 @@ function initOrders() {
             quantity: document.getElementById('orderQ').value
         };
 
-        fetch('http://127.0.0.1:8000/admin/orderProducts/' + data.id, {
+        fetch('http://127.0.0.1:8100/admin/orderProducts/' + data.id, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -90,7 +90,7 @@ function initOrders() {
             id: document.getElementById('deleteOrderID').value
         };
 
-        fetch('http://127.0.0.1:8000/admin/orderProducts/' + data.id, {
+        fetch('http://127.0.0.1:8100/admin/orderProducts/' + data.id, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',

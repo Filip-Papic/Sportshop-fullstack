@@ -1,24 +1,23 @@
 <template>
-  <div class="title">
-    <h1>Sportswear Shop</h1>
+  <div class="naslov">
     <h3 v-if="subtitle">{{ subtitle }}</h3>
   </div>
 </template>
 
 <script>
+
   export default {
     name: 'Header',
-    components: {
-    },
-
+    
     props: {
       subtitle: String
     }
   }
+
 </script>
 
 <style scoped>
-  .title {
+  .naslov {
     padding-top: 15px;
     margin-bottom: 25px;
   }

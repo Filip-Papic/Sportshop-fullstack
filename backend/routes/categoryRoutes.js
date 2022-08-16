@@ -26,8 +26,7 @@ function authToken(req, res, next) {
     });
 }
 
-route.use(authToken);
-
+//route.use(authToken);
 
 route.get('/categories', (req, res) => {
     Categories.findAll()
@@ -46,7 +45,7 @@ route.get('/categories/:id', (req, res) => {
     }
 });
 
-route.post('/categories', (req, res) => {
+route.post('/categories', authToken, (req, res) => {
     Users.findOne({ where: { id: req.user.userID } })
         .then( usr => {
             if (usr.admin || usr.moderator) {
@@ -65,7 +64,7 @@ route.post('/categories', (req, res) => {
         .catch( err => res.status(500).json(err) );
 });
 
-route.put('/categories/:id', (req, res) => {   
+route.put('/categories/:id', authToken, (req, res) => {   
     Users.findOne({ where: { id: req.user.userID } })
         .then( usr => {
             if (usr.admin || usr.moderator) {
@@ -94,7 +93,7 @@ route.put('/categories/:id', (req, res) => {
         .catch( err => res.status(500).json(err) );
 });
 
-route.delete('/categories/:id', (req, res) => { 
+route.delete('/categories/:id', authToken, (req, res) => { 
     Users.findOne({ where: { id: req.user.userID } })
         .then( usr => {
             if (usr.admin || usr.moderator) {

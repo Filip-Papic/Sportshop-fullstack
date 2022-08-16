@@ -2,8 +2,8 @@
   <div id="app">
 
     <div>
-      <b-navbar toggleable="sm" type="dark" variant="info">
-        <b-navbar-brand to="/">MetArt</b-navbar-brand>
+      <b-navbar toggleable="sm" type="dark" variant="dark">
+        <b-navbar-brand to="/">Sportshop</b-navbar-brand>
 
         <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
@@ -11,14 +11,16 @@
           <b-navbar-nav>
             <b-nav-item to="/">Home</b-nav-item>
 
-            <b-nav-item-dropdown text="Department">
+            <b-nav-item-dropdown text="Categories">
               <b-dropdown-item
-                v-for="dep in departments"
-                :key="dep.departmentId"
-                :to="`/department/${dep.departmentId}/${dep.displayName}`">
-                {{ dep.displayName }}
+                v-for="cat in categories"
+                :key="cat.id"
+                :to="`/category/${cat.id}/${cat.name}/`">
+                {{ cat.name }}
               </b-dropdown-item>
             </b-nav-item-dropdown>
+
+            <b-nav-item to="/products">Products</b-nav-item>
           </b-navbar-nav>
 
           <b-navbar-nav class="ml-auto">
@@ -48,19 +50,20 @@
 
     data() {
       return {
-        searchQuery: ''
+        searchQuery: '',
+        //categories: []
       }
     },
 
     computed: {
       ...mapState([
-        'departments',
+        'categories',
         'token'
       ])
     },
 
     mounted() {
-      this.fetchDepartments();
+      this.fetchCategories();
       
       if (localStorage.token) {
         this.setToken(localStorage.token);
@@ -69,7 +72,7 @@
 
     methods: {
       ...mapActions([
-        'fetchDepartments'
+        'fetchCategories'
       ]),
 
       ...mapMutations([
@@ -92,6 +95,10 @@
     },
 
     sockets: {
+      connect() {
+  			console.log("server connected");
+		  },
+
       error(err) {
         alert(err);
       }

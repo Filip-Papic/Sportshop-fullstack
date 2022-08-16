@@ -9,7 +9,7 @@ const { registerValid, loginValid } = require('./app_valid.js');
 const app = express();
 
 var corsOptions = {
-    origin: 'http://127.0.0.1:8000',
+    origin: 'http://127.0.0.1:8080',
     optionsSuccessStatus: 200
 }
 

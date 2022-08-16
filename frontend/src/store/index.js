@@ -7,26 +7,37 @@ export default new Vuex.Store({
   state: {
     items: [],
     departments: [],
+    categories: [],
+    products: [],
+    product: null,
     imageIDs: [],
     token: ''
   },
 
-  mutations: { //sinhrone
+  mutations: {
     addItem(state, item) {
       state.items.push(item);
     },
 
-    addDepartments(state, deps) {
-      state.departments = deps;
+    setCategories(state, categories) {
+      state.categories = categories;
+    },
+
+    setProducts(state, products) {
+      state.products = products;
+    },
+
+    setProductById(state, product) {
+      state.product = product;
     },
 
     setImageIDs(state, ids) {
       state.imageIDs = ids;
     },
 
-    addIDsToDepartment(state, obj) {
-      const department = state.departments.filter( dep => dep.departmentId == obj.id )[0];
-      department['imageIDs'] = obj.imageIDs;
+    addIDsToCategory(state, obj) {
+      const category = state.categories.filter( cat => cat.categoryId == obj.id )[0];
+      category['imageIDs'] = obj.imageIDs;
     },
 
     setToken(state, token) {
@@ -47,12 +58,72 @@ export default new Vuex.Store({
     }
   },
 
-  actions: { //asinhrone
-    fetchDepartments({ commit }) {
-      fetch('https://collectionapi.metmuseum.org/public/collection/v1/departments')
-        .then( obj => obj.json() )
-          .then( res => commit('addDepartments', res.departments) );
+  actions: {
+
+    fetchCategories({ commit }) {
+      fetch('http://127.0.0.1:8100/admin/categories', {
+        method: 'GET',
+        headers: { 
+          'Content-Type': 'application/json', 
+          'Authorization': 'Bearer ' + localStorage.token 
+        }
+      }).then( obj => obj.json() )
+        .then( res => commit('setCategories', res) );
     },
+
+    fetchProducts({ commit }) {
+      fetch('http://127.0.0.1:8100/admin/products', {
+        method: 'GET',
+        headers: { 
+          'Content-Type': 'application/json', 
+          'Authorization': 'Bearer ' + localStorage.token 
+        }
+      }).then( obj => obj.json() )
+        .then( res => commit('setProducts', res) );
+    },
+
+    fetchProductById({ commit }, id){
+      fetch('http://127.0.0.1:8100/admin/products/' + id,{
+        method: 'GET',
+        headers: {
+          'Authorization': 'Bearer ' + localStorage.token
+        }
+      }).then( obj => obj.json() )
+        .then( res => commit('setProductById', res) );
+    },
+
+    fetchProductsByCategory({ commit }, catID) {
+      fetch('http://127.0.0.1:8100/admin/products', {
+        method: 'GET',
+        headers: { 
+          'Content-Type': 'application/json', 
+          'Authorization': 'Bearer ' + localStorage.token 
+        }
+      }).then( obj => obj.json() )
+        .then( res => {
+          if(res.categoryId === catID) {
+            commit('setProducts', res) 
+          }
+        });
+    },
+
+    async fetchProductsByCategory2({ commit, state }, catID) {
+      const productt = state.products.filter( product => product.categoryId === catID )[0];
+      if (productt && department['imageIDs']) {
+        commit('setImageIDs', department['imageIDs']);
+      } else {
+        const obj = await fetch(`https://collectionapi.metmuseum.org/public/collection/v1/objects?departmentIds=${depID}`);
+        const res = await obj.json();
+
+        commit('addIDsToDepartment', {
+          id: depID,
+          imageIDs: res.objectIDs
+        });
+
+        commit('setImageIDs', res.objectIDs);
+      }
+    },
+
 
     async fetchIDsByDepartment({ commit, state }, depID) {
 
@@ -84,30 +155,30 @@ export default new Vuex.Store({
     },
 
     getItem({ commit, state }, id) {
-      return new Promise( (resolve, reject) => {
-        const item = state.items.filter( item => item.objectID == id )[0];
+      // return new Promise( (resolve, reject) => {
+      //   const item = state.items.filter( item => item.objectID == id )[0];
         
-        if (item) {
-          resolve(item);
-        } else {
-          fetch(`https://collectionapi.metmuseum.org/public/collection/v1/objects/${id}`)
-            .then( obj => obj.json())
-            .then( res => {
-              fetch(`/api/messages/${res.objectID}`, {
-                headers: { 'Authorization': `Bearer ${state.token}` }
-              }).then( resp => resp.json() )
-                .then( comments => {
-                  res['comments'] = comments;
-                  commit('addItem', res);
-                  resolve(res);
-                });
-            });
-        }
-      });
+      //   if (item) {
+      //     resolve(item);
+      //   } else {
+      //     fetch(`https://collectionapi.metmuseum.org/public/collection/v1/objects/${id}`)
+      //       .then( obj => obj.json())
+      //       .then( res => {
+      //         fetch(`http://127.0.0.1:8000/api/messages/${res.objectID}`, {
+      //           headers: { 'Authorization': `Bearer ${state.token}` }
+      //         }).then( resp => resp.json() )
+      //           .then( comments => {
+      //             res['comments'] = comments;
+      //             commit('addItem', res);
+      //             resolve(res);
+      //           });
+      //       });
+      //   }
+      // });
     },
 
     register({ commit }, obj) {
-      fetch('/register', {
+      fetch('http://127.0.0.1:9000/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(obj)
@@ -116,7 +187,7 @@ export default new Vuex.Store({
     },
 
     login({ commit }, obj) {
-      fetch('/login', {
+      fetch('http://127.0.0.1:9000/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(obj)
@@ -134,9 +205,5 @@ export default new Vuex.Store({
       const comment = JSON.parse(msg);
       commit('addComment', { artId: comment.artId, comment: comment });
     }
-  },
-
-  modules: {
-
   }
 })

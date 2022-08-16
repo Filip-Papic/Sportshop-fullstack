@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" class="form">
     <Header subtitle="Log In"/>
 
     <b-form @submit="onSubmit">
@@ -54,4 +54,10 @@
 
 <style scoped>
 
+body {
+    text-align: center;
+}
+form {
+    display: inline-block;
+}
 </style>
