@@ -46,6 +46,9 @@
         e.preventDefault();
 
         this.login(this.form);
+        console.log(this.form);
+        localStorage.setItem('userName', this.form.name);//!!!!!!
+
         this.$router.push({ name: 'Home' });
       }
     }

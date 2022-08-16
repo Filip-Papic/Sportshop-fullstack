@@ -21,24 +21,24 @@
     data() {
         return {
             subtitle: '',
-            categoryId: null
+            categoryID: null
         }
     },
 
     watch: {
       $route() {
         this.subtitle = this.$route.params.name;
-        this.categoryId = this.$route.params.categoryId;
+        this.categoryID = this.$route.params.categoryID;
 
-        this.fetchProductsByCategory(this.categoryId);
+        this.fetchProductsByCategory(this.categoryID);
       }
     },
 
     mounted() {
         this.subtitle = this.$route.params.name;
-        this.categoryId = this.$route.params.categoryId;
-
-        this.fetchProductsByCategory(this.categoryId);
+        this.categoryID = this.$route.params.id;
+        
+        this.fetchProductsByCategory(this.categoryID);
     },
 
     methods: {

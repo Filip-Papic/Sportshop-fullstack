@@ -9,6 +9,8 @@ import Register from '@/views/Register.vue';
 import Login from '@/views/Login.vue';
 import ProductView from '@/views/ProductView.vue';
 import ProductsView from '@/views/ProductsView.vue';
+import Profile from '@/views/Profile.vue';
+import EditProfile from '@/views/EditProfile.vue';
 
 Vue.use(VueRouter);
 
@@ -57,6 +59,16 @@ const routes = [
     path: '/login',
     name: 'Login',
     component: Login
+  },
+  {
+    path: '/profile',
+    name: 'Profile',
+    component: Profile
+  },
+  {
+    path: '/edit-profile',
+    name: 'EditProfile',
+    component: EditProfile
   }
 ];
 

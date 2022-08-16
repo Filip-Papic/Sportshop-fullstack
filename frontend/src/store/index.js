@@ -5,6 +5,17 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    user: null,
+    userData: {
+      name: '',
+      email: '',
+      password: '',
+      adress: '',
+      postalCode: '',
+      city: '',
+      country: ''
+    },
+    userId: '',
     items: [],
     departments: [],
     categories: [],
@@ -15,6 +26,19 @@ export default new Vuex.Store({
   },
 
   mutations: {
+    setUserId(state, id){
+      state.userId = id;
+      localStorage.userId = id;
+    },
+
+    getUserById(state, user) {
+      state.user = user
+    },
+
+    getUserByUsername(state, user) {
+      state.user = user
+    },
+
     addItem(state, item) {
       state.items.push(item);
     },
@@ -60,11 +84,67 @@ export default new Vuex.Store({
 
   actions: {
 
+    fetchUserById({ commit }, id) {
+      fetch('http://127.0.0.1:8100/admin/users/' + id,{
+        method: 'GET',
+        headers: {
+          'Authorization': 'Bearer ' + localStorage.token
+        }
+      }).then( obj => obj.json() )
+        .then( res => commit('getUserById', res) );
+    },
+
+    fetchUserByUsername({ commit }, username) {
+      fetch('http://127.0.0.1:8100/admin/users',{
+        method: 'GET',
+        headers: {
+          'Authorization': 'Bearer ' + localStorage.token
+        }
+      }).then( obj => obj.json() )
+        .then( res => {
+          const resf =  res.filter( user => user.name == username )[0];
+          commit('getUserByUsername', resf) 
+          console.log(resf);
+          localStorage.setItem('userID', resf.id);
+        });
+    },
+
+    fetchUserById({ commit }, id) {
+      fetch('http://127.0.0.1:8100/admin/users/' + id,{
+        method: 'GET',
+        headers: {
+          'Authorization': 'Bearer ' + localStorage.token
+        }
+      }).then( obj => obj.json() )
+        .then( res => commit('getUserById', res) );
+    },
+    
+    updateUserData({ commit }, obj){
+      fetch('http://localhost:8100/admin/users/' + obj.id, {
+        method: 'PUT',
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + localStorage.token
+        },
+        body: JSON.stringify(obj)
+      }).then( res => res.json() )
+        .then( el => {
+          if (el.msg) {
+            alert(el.msg);
+        } else {
+            console.log(obj);
+        }
+        })
+        //.then( data => {
+          //console.log(data)
+          //commit('updateUserProfile', data) 
+      //});
+    },
+
     fetchCategories({ commit }) {
       fetch('http://127.0.0.1:8100/admin/categories', {
         method: 'GET',
         headers: { 
-          'Content-Type': 'application/json', 
           'Authorization': 'Bearer ' + localStorage.token 
         }
       }).then( obj => obj.json() )
@@ -75,7 +155,6 @@ export default new Vuex.Store({
       fetch('http://127.0.0.1:8100/admin/products', {
         method: 'GET',
         headers: { 
-          'Content-Type': 'application/json', 
           'Authorization': 'Bearer ' + localStorage.token 
         }
       }).then( obj => obj.json() )
@@ -92,41 +171,20 @@ export default new Vuex.Store({
         .then( res => commit('setProductById', res) );
     },
 
-    fetchProductsByCategory({ commit }, catID) {
+    fetchProductsByCategory({ commit, state }, catID) {
       fetch('http://127.0.0.1:8100/admin/products', {
         method: 'GET',
         headers: { 
-          'Content-Type': 'application/json', 
           'Authorization': 'Bearer ' + localStorage.token 
         }
       }).then( obj => obj.json() )
         .then( res => {
-          if(res.categoryId === catID) {
-            commit('setProducts', res) 
-          }
+          const resf =  res.filter( product => product.categoryID == catID );
+          commit('setProducts', resf) 
         });
     },
-
-    async fetchProductsByCategory2({ commit, state }, catID) {
-      const productt = state.products.filter( product => product.categoryId === catID )[0];
-      if (productt && department['imageIDs']) {
-        commit('setImageIDs', department['imageIDs']);
-      } else {
-        const obj = await fetch(`https://collectionapi.metmuseum.org/public/collection/v1/objects?departmentIds=${depID}`);
-        const res = await obj.json();
-
-        commit('addIDsToDepartment', {
-          id: depID,
-          imageIDs: res.objectIDs
-        });
-
-        commit('setImageIDs', res.objectIDs);
-      }
-    },
-
 
     async fetchIDsByDepartment({ commit, state }, depID) {
-
       const department = state.departments.filter( dep => dep.departmentId === depID )[0];
       if (department && department['imageIDs']) {
         commit('setImageIDs', department['imageIDs']);
@@ -183,7 +241,15 @@ export default new Vuex.Store({
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(obj)
       }).then( res => res.json() )
-        .then( tkn => commit('setToken', tkn.token) );
+        .then( tkn => {
+          if (tkn.msg) {
+            console.log(tkn.msg);
+            console.log(obj);
+          } else {
+            commit('setToken', tkn.token)
+          }
+        }  
+      );
     },
 
     login({ commit }, obj) {
@@ -194,7 +260,8 @@ export default new Vuex.Store({
     }).then( res => res.json() )
       .then( tkn => {
         if (tkn.msg) {
-          alert(tkn.msg);
+          console.log(tkn.msg);
+          console.log(obj);
         } else {
           commit('setToken', tkn.token)
         }
