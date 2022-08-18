@@ -75,7 +75,7 @@
 
         this.register(this.form);
 
-        localStorage.setItem('userName', this.form.name);//!!!!!!!
+        localStorage.setItem('userName', this.form.name);
 
         this.$router.push({ name: 'Home' });
       }

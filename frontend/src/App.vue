@@ -108,8 +108,9 @@
   }
 
   body {
-    background-image: url("https://static.vecteezy.com/system/resources/previews/001/879/865/original/simple-elegant-white-background-free-vector.jpg");
+    background-image: url("assets/bg.jpg");
   }
+  
   .stranica {
     width: 80%;
     margin-left: 10%;

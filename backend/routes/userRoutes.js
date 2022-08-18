@@ -25,11 +25,11 @@ function authToken(req, res, next) {
     });
 }
 
-route.use(authToken);
+//route.use(authToken);
 
 route.get('/users', (req, res) => {      
-    Users.findOne({ where: { id: req.user.userID } })
-        .then( usr => {
+    //Users.findOne({ where: { id: req.user.userID } })
+        //.then( usr => {
             //if (usr.admin) {
                 Users.findAll()//({include: 'orders'})
                     .then( rows => res.json(rows) )
@@ -37,8 +37,8 @@ route.get('/users', (req, res) => {
             //} else {
             //    res.status(403).json({ msg: "Not admin"});
             //}
-        })
-        .catch( err => res.status(500).json(err) );
+        //})
+        //.catch( err => res.status(500).json(err) );
 });
 
 route.get('/users/:id', (req, res) => {

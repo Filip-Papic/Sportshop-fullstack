@@ -61,7 +61,7 @@ route.post('/orders', (req, res) => {
         }       
 });
 
-route.put('/orders/:id', authToken, (req, res) => {
+route.put('/orders/:id', (req, res) => {
     const valid = orderValid.validate(req.body);
     const validID = idValid.validate(req.params);
     if (valid.error){
@@ -86,7 +86,7 @@ route.put('/orders/:id', authToken, (req, res) => {
         }
 });
 
-route.delete('/orders/:id', authToken, (req, res) => {   
+route.delete('/orders/:id', (req, res) => {   
     const valid = idValid.validate(req.params);
     if(!valid.error){
         Orders.findOne({ where: { id: req.params.id } })
@@ -124,7 +124,7 @@ route.get('/orderproducts/:id', (req, res) => {
     }
 });
 
-route.post('/orderproducts', (req, res) => {
+route.post('/orderproducts', authToken, (req, res) => {
         //const valid = orderProductsValid.validate(req.body); // radi bez validacije
         //if(!valid.error){
             OrderProducts.create({ id: req.body.id,
@@ -141,7 +141,7 @@ route.post('/orderproducts', (req, res) => {
         }*/
 });
 
-route.put('/orderproducts/:id', authToken, (req, res) => {   
+route.put('/orderproducts/:id', (req, res) => {   
     const valid = idValid.validate(req.params);
     if(!valid.error){
         OrderProducts.findOne({ where: { id: req.params.id } , include: 'user'})
@@ -161,7 +161,7 @@ route.put('/orderproducts/:id', authToken, (req, res) => {
     }
 });
 
-route.delete('/orderproducts/:id', authToken, (req, res) => {   
+route.delete('/orderproducts/:id', (req, res) => {   
     const valid = idValid.validate(req.params);
     if(!valid.error){
         OrderProducts.findOne({ where: { id: req.params.id } })

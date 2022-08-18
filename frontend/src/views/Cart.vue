@@ -4,7 +4,7 @@
       <b-row>
         <b-col>
           <img
-            src="https://sportsshop.com.bd/wp-content/uploads/2022/02/sports-shop.png"
+            src="../assets/sports-shop.png"
             width="200"
             alt="Logo"
           />
@@ -25,8 +25,6 @@
 
 <script>
   import Header from '@/components/Header.vue'
-  import ProductListFull from '@/components/ProductListFull.vue'
-  import { mapActions, mapState, mapMutations } from 'vuex';
   import ShoppingCart from '../components/ShoppingCart.vue';
   
   export default {

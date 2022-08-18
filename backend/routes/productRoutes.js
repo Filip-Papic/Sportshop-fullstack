@@ -27,7 +27,6 @@ function authToken(req, res, next) {
 
 //route.use(authToken);
 
-
 route.get('/products', (req, res) => {
     Products.findAll({include: ['category']}) 
         .then( rows => res.json(rows) )
@@ -45,7 +44,7 @@ route.get('/products/:id', (req, res) => {
     }
 });
 
-route.post('/products', authToken, (req, res) => {
+route.post('/products', (req, res) => {
     Users.findOne({ where: { id: req.user.userID } })
         .then( usr => {
             if (usr.admin || usr.moderator) {
@@ -74,7 +73,7 @@ route.post('/products', authToken, (req, res) => {
         .catch( err => res.status(500).json(err) );
 });
 
-route.put('/products/:id', authToken, (req, res) => {   
+route.put('/products/:id', (req, res) => {   
     Users.findOne({ where: { id: req.user.userID } })
         .then( usr => {
             if (usr.admin || usr.moderator) {
@@ -109,7 +108,7 @@ route.put('/products/:id', authToken, (req, res) => {
         .catch( err => res.status(500).json(err) );
 });
 
-route.delete('/products/:id', authToken, (req, res) => { 
+route.delete('/products/:id', (req, res) => { 
     Users.findOne({ where: { id: req.user.userID } })
         .then( usr => {
             if (usr.admin || usr.moderator) {

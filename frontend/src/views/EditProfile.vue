@@ -11,8 +11,6 @@
         <b-form-input id="email" v-model="form.email" type="email" placeholder="Enter email" required></b-form-input>
       </b-form-group>
 
-      
-
       <b-form-group label="Adress:" label-for="adress">
         <b-form-input id="adress" v-model="form.adress" placeholder="Enter adress" required></b-form-input>
       </b-form-group>
@@ -84,20 +82,6 @@
             'userData'
         ])
     },
-
-    /* mounted() {
-        //this.getUserById( localStorage.getItem('userId') );
-
-        this.form.name = this.userData.name;
-        this.form.email = this.userData.email;
-        this.form.password = this.userData.password;
-        this.form.adress = this.userData.adress;
-        this.form.postal = this.userData.postal.toString();
-        this.form.city = this.userData.city;
-        this.form.country = this.userData.country;
-
-        console.log(this.form);
-    }, */
     
   }
 </script>

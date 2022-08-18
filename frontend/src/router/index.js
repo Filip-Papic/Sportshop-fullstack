@@ -1,9 +1,7 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import Home from '@/views/Home.vue';
-import Department from '@/views/Department.vue';
 import Category from '@/views/Category.vue';
-import Single from '@/views/Single.vue';
 import Search from '@/views/Search.vue';
 import Register from '@/views/Register.vue';
 import Login from '@/views/Login.vue';
@@ -29,11 +27,6 @@ const routes = [
     component: Category
   },
   {
-    path: '/department/:id/:name',
-    name: 'Department',
-    component: Department
-  },
-  {
     path: '/products',
     name: 'ProductsView',
     component: ProductsView
@@ -42,11 +35,6 @@ const routes = [
     path: '/product/:id/:name',
     name: 'ProductView',
     component: ProductView
-  },
-  {
-    path: '/single/:id',
-    name: 'Single',
-    component: Single
   },
   {
     path: '/search',

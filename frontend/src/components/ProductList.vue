@@ -21,9 +21,11 @@
           </b-col>
         </b-row>
       </b-card>
-      <div>
+
+      <div v-if="token">
         <b-button @click="addToCart(product)">Add to cart</b-button>
       </div>
+      
       <br>
     </div>
 
@@ -39,7 +41,8 @@ export default {
     computed: {
         ...mapState([
         'products',
-        'cart'
+        'cart',
+        'token'
         ])
     },
 

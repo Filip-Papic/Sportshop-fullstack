@@ -4,7 +4,7 @@
       <b-row>
         <b-col>
           <img
-            src="https://sportsshop.com.bd/wp-content/uploads/2022/02/sports-shop.png"
+            src="../assets/sports-shop.png"
             width="200"
             alt="Logo"
           />

@@ -7,12 +7,9 @@ export default new Vuex.Store({
   state: {
     user: null,
     userId: '',
-    items: [],
-    departments: [],
     categories: [],
     products: [],
     product: null,
-    imageIDs: [],
     token: '',
     cart: [],
     orders: [],
@@ -47,10 +44,6 @@ export default new Vuex.Store({
       product.quantityStock--
     },
 
-    addItem(state, item) {
-      state.items.push(item);
-    },
-
     setCategories(state, categories) {
       state.categories = categories;
     },
@@ -61,15 +54,6 @@ export default new Vuex.Store({
 
     setProductById(state, product) {
       state.product = product;
-    },
-
-    setImageIDs(state, ids) {
-      state.imageIDs = ids;
-    },
-
-    addIDsToCategory(state, obj) {
-      const category = state.categories.filter( cat => cat.categoryId == obj.id )[0];
-      category['imageIDs'] = obj.imageIDs;
     },
 
     setCart(state, cart) {
@@ -89,13 +73,6 @@ export default new Vuex.Store({
       state.token = '';
       localStorage.token = '';
     },
-
-    addComment(state, obj) {
-      const image = state.items.filter( item => item.objectID == obj.artId )[0];
-      if (image) {
-        image.comments.push(obj.comment);
-      }
-    }
   },
 
   getters: {
@@ -274,23 +251,6 @@ export default new Vuex.Store({
         });
     },
 
-    async fetchIDsByDepartment({ commit, state }, depID) {
-      const department = state.departments.filter( dep => dep.departmentId === depID )[0];
-      if (department && department['imageIDs']) {
-        commit('setImageIDs', department['imageIDs']);
-      } else {
-        const obj = await fetch(`https://collectionapi.metmuseum.org/public/collection/v1/objects?departmentIds=${depID}`);
-        const res = await obj.json();
-
-        commit('addIDsToDepartment', {
-          id: depID,
-          imageIDs: res.objectIDs
-        });
-
-        commit('setImageIDs', res.objectIDs);
-      }
-    },
-
     search({ commit }, name) {
       console.log(name);
       return new Promise( (resolve, reject) => {
@@ -306,29 +266,6 @@ export default new Vuex.Store({
             resolve(res.total);
           });
       });
-    },
-
-    getItem({ commit, state }, id) {
-      // return new Promise( (resolve, reject) => {
-      //   const item = state.items.filter( item => item.objectID == id )[0];
-        
-      //   if (item) {
-      //     resolve(item);
-      //   } else {
-      //     fetch(`https://collectionapi.metmuseum.org/public/collection/v1/objects/${id}`)
-      //       .then( obj => obj.json())
-      //       .then( res => {
-      //         fetch(`http://127.0.0.1:8000/api/messages/${res.objectID}`, {
-      //           headers: { 'Authorization': `Bearer ${state.token}` }
-      //         }).then( resp => resp.json() )
-      //           .then( comments => {
-      //             res['comments'] = comments;
-      //             commit('addItem', res);
-      //             resolve(res);
-      //           });
-      //       });
-      //   }
-      // });
     },
 
     register({ commit }, obj) {
@@ -363,10 +300,5 @@ export default new Vuex.Store({
         }
       });
     },
-
-    socket_comment({ commit }, msg) {
-      const comment = JSON.parse(msg);
-      commit('addComment', { artId: comment.artId, comment: comment });
-    }
   }
 })
