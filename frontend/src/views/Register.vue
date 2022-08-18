@@ -59,8 +59,8 @@
           postalCode: '',
           city: '',
           country: '',
-          admin: "true",
-          moderator: "true"
+          admin: "false",
+          moderator: "false"
         }
       }
     },

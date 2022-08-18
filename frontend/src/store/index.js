@@ -6,15 +6,6 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     user: null,
-    userData: {
-      name: '',
-      email: '',
-      password: '',
-      adress: '',
-      postalCode: '',
-      city: '',
-      country: ''
-    },
     userId: '',
     items: [],
     departments: [],
@@ -22,7 +13,9 @@ export default new Vuex.Store({
     products: [],
     product: null,
     imageIDs: [],
-    token: ''
+    token: '',
+    cart: [],
+    orders: [],
   },
 
   mutations: {
@@ -37,6 +30,21 @@ export default new Vuex.Store({
 
     getUserByUsername(state, user) {
       state.user = user
+    },
+
+    addItemToCart(state, productId) {
+      state.cart.push({
+        id: productId,
+        quantity: 1
+      })
+    },
+
+    incrementItemQuantity(state, cartItem) {
+      cartItem.quantity++
+    },
+
+    decrementAvailableInventory(state, product) {
+      product.quantityStock--
     },
 
     addItem(state, item) {
@@ -64,6 +72,14 @@ export default new Vuex.Store({
       category['imageIDs'] = obj.imageIDs;
     },
 
+    setCart(state, cart) {
+      state.cart = cart;
+    },
+
+    setOrders(state, orders) {
+      state.orders = orders;
+    },
+
     setToken(state, token) {
       state.token = token;
       localStorage.token = token;
@@ -82,7 +98,82 @@ export default new Vuex.Store({
     }
   },
 
+  getters: {
+    cartProducts(state) {
+      return state.cart.map(({ id, quantity }) => {
+        const product = state.products.find(product => product.id === id)
+        return {
+          id,
+          name: product.name,
+          price: product.price,
+          quantity
+        }
+      })
+    },
+
+    cartTotal(state, getters) {
+      return getters.cartProducts.reduce((total, product) => {
+        return total + product.price * product.quantity
+      }, 0)
+    }
+
+  },
+
   actions: {
+    checkout({ state, commit }) {
+      const cartItems = state.cart.map(({ id, quantity }) => {
+        const product = state.products.find(product => product.id === id)
+        return {
+          //userID: localStorage.userID,
+          productID: id,
+          quantity: quantity
+        }
+      })
+      console.log('Order successful', cartItems);
+      fetch('http://127.0.0.1:8100/admin/orderProducts', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.token}`
+        },
+        body: JSON.stringify(cartItems)
+      })
+        .then(res => {
+          res.json()
+        })
+        .then(data => {
+          commit('setCart', [])
+        })
+    },
+
+    fetchOrders({ state, commit }, id) {
+      fetch('http://127.0.0.1:8100/admin/orderProducts', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.token}`
+        }
+      }).then( obj => obj.json() )
+        .then( res => {
+          const resf =  res.filter( order => order.userID == id );
+          commit('setOrders', resf)
+        }
+      );
+    },
+
+    addToCart(context, product) {
+      if(product.quantityStock > 0) {
+        const cartItem = context.state.cart.find( item => item.id === product.id );
+        console.log(cartItem);
+        if(cartItem) {
+          context.commit('incrementItemQuantity', cartItem);
+        } else {
+          context.commit('addItemToCart', product.id);
+        }
+
+      context.commit('decrementAvailableInventory', product);
+      }
+    },
 
     fetchUserById({ commit }, id) {
       fetch('http://127.0.0.1:8100/admin/users/' + id,{
@@ -104,7 +195,6 @@ export default new Vuex.Store({
         .then( res => {
           const resf =  res.filter( user => user.name == username )[0];
           commit('getUserByUsername', resf) 
-          console.log(resf);
           localStorage.setItem('userID', resf.id);
         });
     },
@@ -201,12 +291,18 @@ export default new Vuex.Store({
       }
     },
 
-    search({ commit }, q) {
+    search({ commit }, name) {
+      console.log(name);
       return new Promise( (resolve, reject) => {
-        fetch(`https://collectionapi.metmuseum.org/public/collection/v1/search?q=${q}`)
-          .then( obj => obj.json() )
+        fetch('http://127.0.0.1:8100/admin/products', {
+          method: 'GET',
+          headers: { 
+            'Authorization': 'Bearer ' + localStorage.token 
+          }
+        }).then( obj => obj.json() )
           .then( res => {
-            commit('setImageIDs', res.objectIDs);
+            const resf =  res.filter( product => product.name.toLowerCase().includes(name.toLowerCase()) );
+            commit('setProducts', resf);
             resolve(res.total);
           });
       });

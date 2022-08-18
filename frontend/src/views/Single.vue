@@ -2,6 +2,11 @@
   <div>
     <Header :subtitle="subtitle"/>
     <SingleArt v-if="image" :image="image" />
+
+    <div>
+        <b-button @click="addToCart">Add to cart</b-button>
+    </div>
+
     <Comments v-if="image" :image="image" />
   </div>
 </template>
@@ -32,7 +37,16 @@
     methods: {
       ...mapActions([
         'getItem'
-      ])
+      ]),
+
+      addToCart(e) {
+        e.preventDefault();
+
+        const name = this.$route.params.name;
+        
+        this.$router.push({  name: 'ProductView', params: { id: product.id , name: product.name} });
+      },
+
     },
 
     mounted() {

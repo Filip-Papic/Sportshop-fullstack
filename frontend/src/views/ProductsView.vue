@@ -12,14 +12,19 @@
         <b-col>
           <Header subtitle="Products"/>
         </b-col>
-        <b-col></b-col>
+        <b-col class="center-block" align-self="center">
+          <b-input-group class="mt-3">
+            <b-form-input v-model="searchQuery" placeholder="Search"></b-form-input>
+            <b-input-group-append>
+              <b-button @click="search" variant="info" type="submit">Search</b-button>
+            </b-input-group-append>
+          </b-input-group>
+        </b-col>
       </b-row>
     </b-container>
-    
-    
 
     <div>
-      <ProductListFull />
+      <ProductList />
     </div>
     
   </div>
@@ -27,19 +32,20 @@
 
 <script>
   import Header from '@/components/Header.vue'
-  import ProductListFull from '@/components/ProductListFull.vue'
+  import ProductList from '@/components/ProductList.vue'
   import { mapActions, mapState, mapMutations } from 'vuex';
-  
+
   export default {
-    name: 'Home',
+    name: 'Products',
     
     components: {
     Header,
-    ProductListFull
+    ProductList
 },
 
     data() {
       return {
+        searchQuery: '',
       }
     },
 
@@ -56,7 +62,16 @@
     methods: {
       ...mapActions([
           'fetchProducts'
-      ])
+      ]),
+
+      search(e) {
+        e.preventDefault();
+
+        const sq = this.searchQuery;
+        this.searchQuery = '';
+        
+        this.$router.push({ name: 'Search', query: { q: sq } });
+      },
     }
   }
 </script>

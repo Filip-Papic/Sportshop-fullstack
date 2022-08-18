@@ -1,28 +1,32 @@
 <template>
   <div>
-    <b-table 
-      id="image-table"
-      hover
-      fixed
-      :items="products"
-      :fields="fields"
-      small
-      :per-page="perPage"
-      :current-page="currentPage"
-      @row-clicked="rowClicked"
-    >
-      <template #cell(isHighlight)="data">
-        <b-icon v-if="data.value" icon="check-square" variant="success" scale="2"></b-icon>
-        <b-icon v-else icon="x-circle" variant="danger" scale="2"></b-icon>
-      </template>
+    <div class="center " v-for="product in products"
+         :key="product.id"
+          >
+      <b-card no-body class="overflow-hidden " style="max-width: 540px;">
+        <b-row no-gutters>
+          <a :href="`/product/${product.id}/${product.name}`" class="stretched-link"></a>
+          <b-col md="6">
+            <b-card-img :src="product.image" class="img" alt="Image"></b-card-img>
+          </b-col>
+          <b-col md="6">
+            <b-card-body :title="product.name">
+              <b-card-text>
+                {{ product.description }}
+              </b-card-text>
+              <b-card-text>
+                {{ product.quantityStock }} in stock
+              </b-card-text>
+            </b-card-body>
+          </b-col>
+        </b-row>
+      </b-card>
+      <div>
+        <b-button @click="addToCart(product)">Add to cart</b-button>
+      </div>
+      <br>
+    </div>
 
-    </b-table>
-    <b-pagination class=".pagination"
-      v-model="currentPage"
-      :total-rows="products.length"
-      :per-page="perPage"
-      aria-controls="image-table"
-    ></b-pagination>
   </div>
 </template>
 
@@ -32,18 +36,10 @@
 export default {
     name: 'ProductList',
 
-    data() {
-        return {
-        fields: ['name', 'price'],
-        items: [],
-        currentPage: 1,
-        perPage: 3
-        }
-    },
-
     computed: {
         ...mapState([
-        'products'
+        'products',
+        'cart'
         ])
     },
 
@@ -58,14 +54,23 @@ export default {
 
         rowClicked(record) {
             this.$router.push({ name: 'ProductView', params: { id: record.id } });
-        }
+        },
+
+        addToCart(product) {
+          this.$store.dispatch('addToCart', product);
+      },
     }
 }
 
 </script>
 
 <style scoped>
-  .pagination {
-    justify-content: center;
+  .center {
+    display: inline-block;
+  }
+
+  img {
+    max-width: 200px;
+    max-height: 200px;
   }
 </style>

@@ -8,6 +8,16 @@
         <b-button href="/edit-profile">Edit profile</b-button>
     </div>
 
+    <hr>
+    My orders:
+    <div>
+      <p v-for="order in orders" 
+            :key="order.id"
+            >
+            User: {{ order.userID }}, Order number: {{ order.id }}, Date: {{ order.createdAt }}
+        </p>
+    </div>
+
   </div>
 </template>
 
@@ -32,18 +42,21 @@
 
     methods: {
       ...mapActions([
-        'fetchUserByUsername'
+        'fetchUserByUsername',
+        'fetchOrders'
       ])
     },
 
     computed: {
       ...mapState([
-        'user'
+        'user',
+        'orders'
       ])
     },
 
     mounted() {
       this.fetchUserByUsername(localStorage.userName);
+      this.fetchOrders(localStorage.userID);
     }
   }
 

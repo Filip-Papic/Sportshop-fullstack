@@ -23,25 +23,27 @@
 
     data() {
       return {
-        subtitle: ''
+        subtitle: '',
+        id: this.$route.params.id
       }
     },
     
     methods: {
       ...mapActions([
-        'fetchProductById'
-      ])
+        'fetchProductById',
+      ]),
     },
 
     computed: {
       ...mapState([
-        'product'
+        'product',
       ])
     },
 
     mounted() {
       this.fetchProductById(this.$route.params.id);
     }
+
   }
 
 </script>

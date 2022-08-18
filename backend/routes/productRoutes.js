@@ -59,6 +59,7 @@ route.post('/products', authToken, (req, res) => {
                         price: req.body.price,
                         description: req.body.description,
                         size: req.body.size,
+                        image: req.body.image,
                         quantityStock: req.body.quantityStock
                     })
                     .then( rows => res.json(rows) )
@@ -92,6 +93,7 @@ route.put('/products/:id', authToken, (req, res) => {
                             product.price = req.body.price;
                             product.description = req.body.description;
                             product.size = req.body.size;
+                            product.image = req.body.image;
                             product.quantityStock = req.body.quantityStock;
 
                             product.save()

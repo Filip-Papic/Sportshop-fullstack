@@ -11,6 +11,9 @@ import ProductView from '@/views/ProductView.vue';
 import ProductsView from '@/views/ProductsView.vue';
 import Profile from '@/views/Profile.vue';
 import EditProfile from '@/views/EditProfile.vue';
+import Cart from '@/views/Cart.vue';
+import About from '@/views/About.vue';
+import Contact from '@/views/Contact.vue';
 
 Vue.use(VueRouter);
 
@@ -36,7 +39,7 @@ const routes = [
     component: ProductsView
   },
   {
-    path: '/product/:id',
+    path: '/product/:id/:name',
     name: 'ProductView',
     component: ProductView
   },
@@ -69,7 +72,22 @@ const routes = [
     path: '/edit-profile',
     name: 'EditProfile',
     component: EditProfile
-  }
+  },
+  {
+    path: '/my-cart',
+    name: 'Cart',
+    component: Cart
+  },
+  {
+    path: '/about',
+    name: 'About',
+    component: About
+  },
+  {
+    path: '/contact',
+    name: 'Contact',
+    component: Contact
+  },
 ];
 
 const router = new VueRouter({

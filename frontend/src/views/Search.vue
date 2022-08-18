@@ -1,35 +1,34 @@
 <template>
   <div id="app">
     <Header :subtitle="subtitle"/>
-    <ImageList />
+    <ProductList />
   </div>
 </template>
 
 <script>
 
   import Header from '@/components/Header.vue';
-  import ImageList from '@/components/ImageList.vue';
   import { mapActions } from 'vuex';
+  import ProductList from '../components/ProductList.vue';
 
   export default {
     name: 'Search',
     
     components: {
-      Header,
-      ImageList
-    },
+    Header,
+    ProductList
+},
 
     data() {
       return {
         subtitle: 'Search results: ',
-        imageIDs: null
+        products: null
       }
     },
 
     mounted() {
-      this.search(this.$route.query.q).then( res => {
-        this.subtitle += res;
-      });
+      this.search(this.$route.query.q)
+      this.subtitle += this.$route.query.q;
     },
 
     methods: {

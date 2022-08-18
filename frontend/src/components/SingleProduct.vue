@@ -2,17 +2,20 @@
   <div>
 
     <div class="art">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/d/d1/Image_not_available.png" />
+      <img :src="product.image" class="img" />
       
-      <ul>
-        <li>Name: {{ product.name }}</li>
-        <li>Price: {{ product.price }}</li>
-        <li>Manufacturer: {{ product.manufacturer }}</li>
-        <li>Description: {{ product.description }}</li>
-        <li>Size: {{ product.size }}</li>
-        <li>Quantity in stock: {{ product.quantityStock }}</li>
-        <li>Category: {{ product.categoryID}}</li>
-      </ul>
+      <p>Name: {{ product.name }}</p>
+      <p>Price: {{ product.price }}</p>
+      <p>Manufacturer: {{ product.manufacturer }}</p>
+      <p>Description: {{ product.description }}</p>
+      <p>Size: {{ product.size }}</p>
+      <p>Quantity in stock: {{ product.quantityStock }}</p>
+      <p>Category: {{ product.categoryID}}</p>
+      
+    </div>
+
+    <div>
+        <b-button @click="addToCart(product)">Add to cart</b-button>
     </div>
 
   </div>
@@ -20,11 +23,26 @@
 
 <script>
 
+  import { mapActions, mapState } from 'vuex';
+
   export default {
     name: 'SingleProduct',
 
     props: {
-      product: Object
+      product: Object,
+    },
+
+    computed: {
+        ...mapState([
+        'products',
+        'cart'
+        ])
+    },
+
+    methods: {
+      addToCart(product) {
+        this.$store.dispatch('addToCart', product);
+      }
     }
   }
 
@@ -33,8 +51,8 @@
 <style scoped>
 
   img {
-    max-width: 600px;
-    max-height: 600px;
+    max-width: 400px;
+    max-height: 400px;
   }
 
   .art {
