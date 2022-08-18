@@ -20,7 +20,7 @@
               </b-dropdown-item>
             </b-nav-item-dropdown>
 
-            <b-nav-item to="/products">Products</b-nav-item>
+            <b-nav-item to="/products-view">Products</b-nav-item>
             <b-nav-item to="/about">About us</b-nav-item>
             <b-nav-item to="/contact">Contact</b-nav-item>
           </b-navbar-nav>

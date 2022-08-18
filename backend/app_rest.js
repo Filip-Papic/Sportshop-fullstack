@@ -10,7 +10,7 @@ const categories = require('./routes/categoryRoutes');
 const app = express();
 
 var corsOptions = {
-    origin: 'http://127.0.0.1:8080',
+    origin: '*',
     optionsSuccessStatus: 200,
     //credentials: true // !!!!!!!!!!!!!
 }

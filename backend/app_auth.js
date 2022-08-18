@@ -9,14 +9,14 @@ const { registerValid, loginValid } = require('./app_valid.js');
 const app = express();
 
 var corsOptions = {
-    origin: 'http://127.0.0.1:8080',
+    origin: '*',
     optionsSuccessStatus: 200
 }
 
 app.use(express.json());
 app.use(cors(corsOptions));
 
-app.post('/register', (req, res) => {
+app.post('/api_register', (req, res) => {
     const valid = registerValid.validate(req.body);
 
     if(!valid.error){
@@ -50,7 +50,7 @@ app.post('/register', (req, res) => {
     }
 });
 
-app.post('/login', (req, res) => {
+app.post('/api_login', (req, res) => {
     const valid = loginValid.validate(req.body);
 
     if(!valid.error){

@@ -7,13 +7,14 @@ const http = require('http');
 const { Server } = require("socket.io");
 require('dotenv').config();
 const port = 8000;
+const history = require('connect-history-api-fallback');
 
 const app = express();
 
 const server = http.createServer(app);
 const io = new Server(server, {
     cors: {
-        origin: 'http://127.0.0.1:8080',
+        origin: '*',
         methods: ['GET', 'POST'],
         //transports: ['websocket', 'polling'],
         //allowedHeaders: ['Access-Control-Allow-Origin'],
@@ -92,11 +93,11 @@ io.on('connection', socket => {
     socket.on('error', err => socket.emit('error', err.message) );
 });
 
-/* app.get('/register', (req, res) => {
+/* app.get('/api_register', (req, res) => {
     res.sendFile('register.html', { root: './static' });
 });
 
-app.get('/login', (req, res) => {
+app.get('/api_login', (req, res) => {
     res.sendFile('login.html', { root: './static' });
 });
 
@@ -104,9 +105,19 @@ app.get('/', authToken, (req, res) => {
     res.sendFile('index.html', { root: './static' });
 }); */
 
-app.use(express.static(path.join(__dirname, 'static')));
+//app.use(express.static(path.join(__dirname, 'static')));
 
-app.set('port', process.env.PORT || 8000);//!!!!!!!!!!!!!!!!!!!!!!!!!!
+app.set('port', process.env.PORT || 8000);//!!!!!
+
+
+const staticMdl = express.static(path.join(__dirname, 'dist'));
+
+app.use(staticMdl);
+
+app.use(history({ index: '/index.html' }));
+
+app.use(staticMdl);
+
 
 server.listen({ port: port }, async () => {
     await sequelize.authenticate();

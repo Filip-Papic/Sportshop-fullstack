@@ -269,7 +269,7 @@ export default new Vuex.Store({
     },
 
     register({ commit }, obj) {
-      fetch('http://127.0.0.1:9000/register', {
+      fetch('http://127.0.0.1:9000/api_register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(obj)
@@ -286,7 +286,7 @@ export default new Vuex.Store({
     },
 
     login({ commit }, obj) {
-      fetch('http://127.0.0.1:9000/login', {
+      fetch('http://127.0.0.1:9000/api_login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(obj)
@@ -300,5 +300,6 @@ export default new Vuex.Store({
         }
       });
     },
+
   }
 })
