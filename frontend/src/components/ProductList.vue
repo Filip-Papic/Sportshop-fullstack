@@ -3,7 +3,7 @@
     <div class="center " v-for="product in products"
          :key="product.id"
           >
-      <b-card no-body class="overflow-hidden " style="max-width: 540px;">
+      <b-card no-body class="overflow-hidden " style="max-width: 540px; height: 350px">
         <b-row no-gutters>
           <a :href="`/product/${product.id}/${product.name}`" class="stretched-link"></a>
           <b-col md="6">

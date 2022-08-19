@@ -107,7 +107,7 @@ export default new Vuex.Store({
         }
       })
       console.log('Order successful', cartItems);
-      fetch('http://127.0.0.1:8100/admin/orderProducts', {
+      fetch('https://sportshopsjrest.herokuapp.com/admin/orderProducts', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -124,7 +124,7 @@ export default new Vuex.Store({
     },
 
     fetchOrders({ state, commit }, id) {
-      fetch('http://127.0.0.1:8100/admin/orderProducts', {
+      fetch('https://sportshopsjrest.herokuapp.com/admin/orderProducts', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -132,8 +132,8 @@ export default new Vuex.Store({
         }
       }).then( obj => obj.json() )
         .then( res => {
-          const resf =  res.filter( order => order.userID == id );
-          commit('setOrders', resf)
+          //const resf =  res.filter( order => order.userID == id );
+          commit('setOrders', res)
         }
       );
     },
@@ -153,7 +153,7 @@ export default new Vuex.Store({
     },
 
     fetchUserById({ commit }, id) {
-      fetch('http://127.0.0.1:8100/admin/users/' + id,{
+      fetch('https://sportshopsjrest.herokuapp.com/admin/users/' + id,{
         method: 'GET',
         headers: {
           'Authorization': 'Bearer ' + localStorage.token
@@ -163,7 +163,7 @@ export default new Vuex.Store({
     },
 
     fetchUserByUsername({ commit }, username) {
-      fetch('http://127.0.0.1:8100/admin/users',{
+      fetch('https://sportshopsjrest.herokuapp.com/admin/users',{
         method: 'GET',
         headers: {
           'Authorization': 'Bearer ' + localStorage.token
@@ -172,12 +172,12 @@ export default new Vuex.Store({
         .then( res => {
           const resf =  res.filter( user => user.name == username )[0];
           commit('getUserByUsername', resf) 
-          localStorage.setItem('userID', resf.id);
+          //localStorage.setItem('userID', resf.id);
         });
     },
 
     fetchUserById({ commit }, id) {
-      fetch('http://127.0.0.1:8100/admin/users/' + id,{
+      fetch('https://sportshopsjrest.herokuapp.com/admin/users/' + id,{
         method: 'GET',
         headers: {
           'Authorization': 'Bearer ' + localStorage.token
@@ -187,7 +187,7 @@ export default new Vuex.Store({
     },
     
     updateUserData({ commit }, obj){
-      fetch('http://localhost:8100/admin/users/' + obj.id, {
+      fetch('https://sportshopsjrest.herokuapp.com/admin/users/' + obj.id, {
         method: 'PUT',
         headers: { 
           'Content-Type': 'application/json',
@@ -209,7 +209,7 @@ export default new Vuex.Store({
     },
 
     fetchCategories({ commit }) {
-      fetch('http://127.0.0.1:8100/admin/categories', {
+      fetch('https://sportshopsjrest.herokuapp.com/admin/categories', {
         method: 'GET',
         headers: { 
           'Authorization': 'Bearer ' + localStorage.token 
@@ -219,7 +219,7 @@ export default new Vuex.Store({
     },
 
     fetchProducts({ commit }) {
-      fetch('http://127.0.0.1:8100/admin/products', {
+      fetch('https://sportshopsjrest.herokuapp.com/admin/products', {
         method: 'GET',
         headers: { 
           'Authorization': 'Bearer ' + localStorage.token 
@@ -229,7 +229,7 @@ export default new Vuex.Store({
     },
 
     fetchProductById({ commit }, id){
-      fetch('http://127.0.0.1:8100/admin/products/' + id,{
+      fetch('https://sportshopsjrest.herokuapp.com/admin/products/' + id,{
         method: 'GET',
         headers: {
           'Authorization': 'Bearer ' + localStorage.token
@@ -239,7 +239,7 @@ export default new Vuex.Store({
     },
 
     fetchProductsByCategory({ commit, state }, catID) {
-      fetch('http://127.0.0.1:8100/admin/products', {
+      fetch('https://sportshopsjrest.herokuapp.com/admin/products', {
         method: 'GET',
         headers: { 
           'Authorization': 'Bearer ' + localStorage.token 
@@ -254,7 +254,7 @@ export default new Vuex.Store({
     search({ commit }, name) {
       console.log(name);
       return new Promise( (resolve, reject) => {
-        fetch('http://127.0.0.1:8100/admin/products', {
+        fetch('https://sportshopsjrest.herokuapp.com/admin/products', {
           method: 'GET',
           headers: { 
             'Authorization': 'Bearer ' + localStorage.token 
@@ -269,7 +269,7 @@ export default new Vuex.Store({
     },
 
     register({ commit }, obj) {
-      fetch('http://127.0.0.1:9000/api_register', {
+      fetch('https://sportshopsjauth.herokuapp.com/api_register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(obj)
@@ -286,7 +286,7 @@ export default new Vuex.Store({
     },
 
     login({ commit }, obj) {
-      fetch('http://127.0.0.1:9000/api_login', {
+      fetch('https://sportshopsjauth.herokuapp.com/api_login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(obj)

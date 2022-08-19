@@ -1,7 +1,7 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "ddc8ac013897bf169987",
-    "url": "/css/app.268b7353.css"
+    "revision": "7297c1e7ab33b4a5fd90",
+    "url": "/css/app.040cd357.css"
   },
   {
     "revision": "9679f3f7425cbb5f7270",
@@ -16,12 +16,12 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/img/sports-shop.fedc735c.png"
   },
   {
-    "revision": "d10a16f67d4c9dbad30dfa3b924df361",
+    "revision": "b93d199ab8691d6813995e1ff3ab6cc5",
     "url": "/index.html"
   },
   {
-    "revision": "ddc8ac013897bf169987",
-    "url": "/js/app.a071f5e0.js"
+    "revision": "7297c1e7ab33b4a5fd90",
+    "url": "/js/app.7eb415a3.js"
   },
   {
     "revision": "9679f3f7425cbb5f7270",

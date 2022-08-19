@@ -21,7 +21,7 @@ Vue.use(IconsPlugin);
   }
 })); */
 
-const socket = io('http://127.0.0.1:8000', {
+const socket = io('https://sportshopsj.herokuapp.com/', {
   withCredentials: true,
 });
 export default socket;
